@@ -7,7 +7,7 @@ on:
 concurrency: ${{ github.ref }}
 
 env:
-  NAME: real-home-data-backend
+  NAME: real-home-data/backend
   PROJECT_ID: real-data-now
   REGION: us-central1
   GCP_SA: etl-181@real-data-now.iam.gserviceaccount.com
