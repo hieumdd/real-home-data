@@ -1,0 +1,9 @@
+{%- macro breakdown(by) -%}
+    {%- if by == 'bedrooms_total' -%}
+    BedroomsTotal
+    {%- elif by == 'type' -%}
+    PropertySubTypeGroup
+    {%- elif by == 'zip_code' -%}
+    ZipCode
+    {%- endif -%}
+{%- endmacro %}

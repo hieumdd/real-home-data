@@ -1,0 +1,26 @@
+{%- import 'macro/dimensions.sql.j2' as dimensions %}
+{%- import 'macro/groupbys.sql.j2' as groupbys %}
+{%- import 'macro/filters.sql.j2' as filters %}
+
+SELECT
+    {{ dimensions.date('DATE(MajorChangeTimeStamp)', level) }} AS date,
+    {%- if by -%}
+        {{ dimensions.breakdown(by) }},
+    {%- endif -%}
+    COUNT(ListingId) AS count_units,
+    AVG(DATE_DIFF(DATE(MajorChangeTimeStamp), OnMarketDate, day) + 1) AS avg_time_to_discount_in_days,
+    AVG(ListPrice - PreviousListPrice) AS price_reduction,
+FROM
+    MLSGrid.Property
+WHERE
+    MajorChangeType = 'Price Change'
+    AND {{ filters.mls_status_active() }}
+    AND {{ filters.market_date(start, end) }}
+    AND {{ filters.geo(county, city) }}
+GROUP BY
+    date
+    {% if by %}
+    ,{{ groupbys.breakdown(by) }}
+    {% endif %}
+ORDER BY
+    date

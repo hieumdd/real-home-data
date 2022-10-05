@@ -1,0 +1,15 @@
+{%- import 'macro/filters.sql.j2' as filters %}
+
+SELECT
+    OnMarketDate AS date,
+    SUM(ListPrice) AS total_list_price,
+FROM
+    MLSGrid.Property
+WHERE
+    MlsStatus in ('Active', 'Coming Soon / Hold')
+    AND {{ filters.market_date(start, end) }}
+    AND {{ filters.geo(county, city) }}
+GROUP BY
+    date
+ORDER BY
+    date

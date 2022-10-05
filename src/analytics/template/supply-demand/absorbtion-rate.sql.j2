@@ -1,0 +1,55 @@
+{%- import 'macro/dimensions.sql.j2' as dimensions %}
+{%- import 'macro/filters.sql.j2' as filters %}
+{%- import 'macro/cte.sql.j2' as cte %}
+
+WITH
+    {{ cte.master_dimension(by) }}
+    sales AS (
+        SELECT
+            {{ dimensions.date('CloseDate', level) }} AS date,
+            COUNT(ListingId) AS cnt,
+        FROM
+            MLSGrid.Property
+        WHERE
+            {{ filters.close_date(start, end) }}
+            AND {{ filters.geo(county, city) }}
+        GROUP BY
+            date
+    ),
+    inventory AS (
+        SELECT
+            {{ dimensions.date('OnMarketDate', level) }} AS date,
+            COUNT(ListingId) AS cnt,
+        FROM
+            MLSGrid.Property
+        WHERE
+            {{ filters.mls_status_active() }}
+            AND {{ filters.market_date(start, end) }}
+            AND {{ filters.geo(county, city) }}
+        GROUP BY
+            date
+    )
+SELECT
+    *,
+    AVG(sales) OVER (ORDER BY date) AS sales_avg,
+    AVG(inventory) OVER (ORDER BY date) AS inventory_avg,
+FROM
+    (
+        SELECT
+            master_dimension.day AS date,
+            SUM(sales.cnt) AS sales,
+            SUM(inventory.cnt) AS inventory,
+        FROM
+            master_dimension
+            LEFT JOIN sales
+            ON master_dimension.day = sales.date
+            LEFT JOIN inventory
+            ON master_dimension.day = inventory.date
+        GROUP BY
+            master_dimension.day
+        HAVING
+            sales > 0
+            OR inventory > 0
+    )
+ORDER BY
+    date

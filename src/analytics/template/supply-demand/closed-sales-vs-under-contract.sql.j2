@@ -1,0 +1,91 @@
+{%- import 'macro/dimensions.sql.j2' as dimensions %}
+{%- import 'macro/groupbys.sql.j2' as groupbys %}
+{%- import 'macro/filters.sql.j2' as filters %}
+{%- import 'macro/cte.sql.j2' as cte %}
+
+WITH
+    {{ cte.master_dimension(by) }}
+    closed_sales AS (
+        SELECT
+            {{ dimensions.date('CloseDate', level) }} AS date,
+            {%- if by -%}
+                {{ dimensions.breakdown(by) }},
+            {%- endif -%}
+            COUNT(ListingId) AS cnt,
+        FROM
+            MLSGrid.Property
+        WHERE
+            {{ filters.close_date(start, end) }}
+            AND {{ filters.geo(county, city) }}
+        GROUP BY
+            date
+            {%- if by -%}
+            ,{{ groupbys.breakdown(by) }}
+            {%- endif -%}
+    ),
+    under_contract AS (
+        SELECT
+            {{ dimensions.date('COALESCE(OffMarketDate, ContingentDate)', level) }} AS date,
+            {%- if by -%}
+                {{ dimensions.breakdown(by) }},
+            {%- endif -%}
+            COUNT(ListingId) AS cnt,
+        FROM
+            MLSGrid.Property
+        WHERE
+            (
+                OffMarketDate BETWEEN '{{ start }}' AND '{{ end }}'
+                OR ContingentDate BETWEEN '{{ start }}' AND '{{ end }}'
+            )
+            AND {{ filters.geo(county, city) }}
+        GROUP BY
+            date
+            {%- if by -%}
+            ,{{ groupbys.breakdown(by) }}
+            {%- endif -%}
+    )
+SELECT
+    master_dimension.day AS date,
+    {%- if by == 'bedrooms_total' -%}
+    master_dimension.bedrooms_total,
+    {%- elif by == 'type' -%}
+    master_dimension.property_sub_type_group,
+    {%- elif by == 'zip_code' -%}
+    master_dimension.zip_code,
+    {%- endif %}
+    SUM(closed_sales.cnt) AS closed_sales,
+    SUM(under_contract.cnt) AS under_contract
+FROM
+    master_dimension
+    LEFT JOIN closed_sales
+    ON master_dimension.day = closed_sales.date
+    {% if by == 'bedrooms_total' %}
+    AND COALESCE(master_dimension.bedrooms_total, 101) = COALESCE(closed_sales.bedrooms_total, 101)
+    {% elif by == 'type' %}
+    AND COALESCE(master_dimension.property_sub_type_group, 'ABC') = COALESCE(closed_sales.property_sub_type_group, 'ABC')
+    {% elif by == 'zip_code' %}
+    AND COALESCE(master_dimension.zip_code, 'ABC') = COALESCE(closed_sales.zip_code, 101)
+    {% endif %}
+    LEFT JOIN under_contract
+    ON master_dimension.day = under_contract.date
+    {% if by == 'bedrooms_total' %}
+    AND COALESCE(master_dimension.bedrooms_total, 101) = COALESCE(under_contract.bedrooms_total, 101)
+    {% elif by == 'type' %}
+    AND COALESCE(master_dimension.property_sub_type_group, 'ABC') = COALESCE(under_contract.property_sub_type_group, 'ABC')
+    {% elif by == 'zip_code' %}
+    AND COALESCE(master_dimension.zip_code, 'ABC') = COALESCE(under_contract.zip_code, 101)
+    {% endif %}
+GROUP BY
+    master_dimension.day
+    {% if by == 'bedrooms_total' %}
+    ,master_dimension.bedrooms_total
+    {% elif by == 'type' %}
+    ,master_dimension.property_sub_type_group
+    {% elif by == 'zip_code' %}
+    ,master_dimension.zip_code
+    {% endif %}
+HAVING
+    closed_sales > 0
+    OR under_contract > 0
+ORDER BY
+    date

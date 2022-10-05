@@ -1,0 +1,50 @@
+{%- import 'macro/dimensions.sql.j2' as dimensions %}
+{%- import 'macro/groupbys.sql.j2' as groupbys %}
+{%- import 'macro/filters.sql.j2' as filters %}
+
+SELECT
+    *
+FROM (
+    SELECT
+        date,
+        {% if by %}
+        {{ dimensions.breakdown_cte(by) }},
+        {% endif %}
+        days_on_market,
+        AVG(days_on_market) OVER (
+            {% if by %}
+            PARTITION BY {{ dimensions.breakdown_cte(by) }}
+            {% endif %}
+            ORDER BY date
+            ROWS BETWEEN 7 PRECEDING AND CURRENT ROW
+        ) AS avg_days_on_market_7,
+        AVG(days_on_market) OVER (
+            {% if by %}
+            PARTITION BY {{ dimensions.breakdown_cte(by) }}
+            {% endif %}
+            ORDER BY date
+            ROWS BETWEEN 14 PRECEDING AND CURRENT ROW
+        ) AS avg_days_on_market_14,
+    FROM
+        (
+            SELECT
+                {{ dimensions.date('CloseDate', level) }} AS date,
+                {%- if by -%}
+                {{ dimensions.breakdown(by) }},
+                {% endif %}
+                AVG(DATE_DIFF(CloseDate, OnMarketDate, DAY) + 1) as days_on_market,
+            FROM
+                MLSGrid.Property
+            WHERE
+                {{ filters.geo(county, city) }}
+            GROUP BY
+                date
+                {% if by %}
+                ,{{ groupbys.breakdown(by) }}
+                {% endif %}
+        )
+)
+WHERE
+    date BETWEEN {{ start|quote }} AND {{ end|quote }}
+ORDER BY
+    date

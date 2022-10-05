@@ -1,0 +1,16 @@
+services:
+  backend:
+    container_name: real-home-data-backend
+    image: us-docker.pkg.dev/${PROJECT_ID}/gcr.io/real-home-data/backend:master
+    restart: unless-stopped
+    env_file:
+      - ./env
+    volumes:
+      - ./service-account.json:/tmp/service-account.json
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
+    networks:
+    - real-home-data
+
+networks:
+  real-home-data:

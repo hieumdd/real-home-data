@@ -1,0 +1,15 @@
+{%- import 'macro/filters.sql.j2' as filters %}
+
+SELECT
+    CloseDate AS date,
+    SUM(ClosePrice) AS total_close_price,
+FROM
+    MLSGrid.Property
+WHERE
+    PropertySubTypeGroup = 'Single Family Residence'
+    AND {{ filters.geo(county, city) }}
+    AND {{ filters.close_date(start, end) }}
+GROUP BY
+    date
+ORDER BY
+    date

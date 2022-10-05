@@ -1,0 +1,17 @@
+{%- import 'macro/dimensions.sql.j2' as dimensions %}
+{%- import 'macro/filters.sql.j2' as filters %}
+
+SELECT
+    {{ dimensions.date('OnMarketDate', level) }} AS date,
+    PropertySubTypeGroup AS property_sub_type_group,
+    COUNT(ListingId) as count_units,
+FROM
+    MLSGrid.Property
+WHERE
+    {{ filters.market_date(start, end) }}
+    AND {{ filters.geo(county, city) }}
+GROUP BY
+    date,
+    PropertySubTypeGroup
+ORDER BY
+    date

@@ -1,0 +1,18 @@
+{%- import 'macro/filters.sql.j2' as filters %}
+
+SELECT
+    CloseDate AS date,
+    SUM(ClosePrice) AS total_close_price,
+    AVG(ClosePrice) AS avg_close_price,
+    AVG(ListPrice) AS avg_list_price,
+    AVG(DATE_DIFF(CloseDate, OnMarketDate, DAY) + 1) AS avg_days_to_close,
+FROM
+    MLSGrid.Property
+WHERE
+    {{ filters.close_date(start, end) }}
+    AND {{ filters.geo(county, city) }}
+GROUP BY
+    date
+ORDER BY
+    date
+    

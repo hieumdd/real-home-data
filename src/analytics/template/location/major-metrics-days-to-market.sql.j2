@@ -1,0 +1,15 @@
+{%- import 'macro/filters.sql.j2' as filters %}
+
+SELECT
+    OnMarketDate AS date,
+    AVG(DATE_DIFF(CURRENT_DATE(), OnMarketDate, DAY) + 1) AS avg_days_to_market,
+FROM
+    MLSGrid.Property
+WHERE
+    MlsStatus in ('Active')
+    AND {{ filters.market_date(start, end) }}
+    AND {{ filters.geo(county, city) }}
+GROUP BY
+    date
+ORDER BY
+    date
