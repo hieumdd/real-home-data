@@ -4,13 +4,10 @@ services:
     image: us-docker.pkg.dev/${PROJECT_ID}/gcr.io/real-home-data/backend:master
     restart: unless-stopped
     env_file:
-      - ./env
+      - ./.env
     volumes:
       - ./service-account.json:/tmp/service-account.json
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/service-account.json
-    networks:
-    - real-home-data
-
-networks:
-  real-home-data:
+    ports:
+      - 80:5000
