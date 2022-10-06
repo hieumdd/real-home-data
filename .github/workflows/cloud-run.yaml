@@ -43,7 +43,7 @@ jobs:
           echo "PG_HOST: ${{ secrets.PG_HOST }}" >> ${{ env.ENV_FILE }}
 
           echo "JWT_SECRET: ${{ secrets.JWT_SECRET }}" >> ${{ env.ENV_FILE }}
-          echo "JWT_EXPIRATION_TIME: ${{ secrets.JWT_EXPIRATION_TIME }}" >> ${{ env.ENV_FILE }}
+          echo "JWT_EXPIRATION_TIME: '${{ secrets.JWT_EXPIRATION_TIME }}'" >> ${{ env.ENV_FILE }}
 
       - uses: actions/upload-artifact@v3
         with:
