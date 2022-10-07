@@ -10,8 +10,8 @@ export class CloudLoggingLogger extends ConsoleLogger {
         const loggingBunyan = new LoggingBunyan();
 
         this.logger = bunyan.createLogger({
-            name: 'my-service',
-            streams: [loggingBunyan.stream('info')],
+            name: 'real-home-data-backend',
+            streams: [loggingBunyan.stream('debug')],
         });
     }
 
