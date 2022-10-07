@@ -14,7 +14,6 @@ const bootstrap = async () => {
         logger: new CloudLoggingLogger(),
     });
     app.use(cookieParser());
-    app.setGlobalPrefix('api');
 
     const config = new DocumentBuilder()
         .setTitle('Real Home Data')
