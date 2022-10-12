@@ -18,16 +18,16 @@ export class QueryGeneric {
 }
 
 export class QueryLevel extends QueryGeneric {
-    level: Level;
+    level?: Level;
 }
 
 export class QueryBy extends QueryGeneric {
-    by: By;
+    by?: By;
 }
 
 export class QueryLevelBy extends QueryGeneric implements QueryLevel, QueryBy {
-    level: Level;
-    by: By;
+    level?: Level;
+    by?: By;
 }
 
 export type QueryOptions =
