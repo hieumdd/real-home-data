@@ -5,7 +5,7 @@ import { JwtGuard } from '../auth/jwt.guard';
 import { AnalyticsService } from './analytics.service';
 import { QueryLevelBy } from './analytics.dto';
 
-const route = 'demand-planning';
+const route = 'supply-demand';
 
 @ApiTags('Analytics / Supply Demand')
 @ApiBearerAuth()
