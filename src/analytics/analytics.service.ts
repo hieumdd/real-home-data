@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as nunjucks from 'nunjucks';
+import nunjucks from 'nunjucks';
 import { BigQueryDate } from '@google-cloud/bigquery';
 import { chain } from 'lodash';
 

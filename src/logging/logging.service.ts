@@ -1,6 +1,6 @@
 import { ConsoleLogger } from '@nestjs/common';
 import { LoggingBunyan } from '@google-cloud/logging-bunyan';
-import * as bunyan from 'bunyan';
+import bunyan from 'bunyan';
 
 export class CloudLoggingLogger extends ConsoleLogger {
     logger: bunyan;
