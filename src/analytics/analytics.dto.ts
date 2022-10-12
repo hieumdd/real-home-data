@@ -5,7 +5,7 @@ enum Level {
 }
 
 enum By {
-    'bedrooms',
+    'bedrooms_total',
     'type',
     'zip_code',
 }
