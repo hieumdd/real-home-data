@@ -27,7 +27,16 @@ const routes = [
 
 const options: QueryOptions[] = [
     {
+        start: '2022-07-01',
+        end: '2022-08-01',
+    },
+    {
         level: 'day',
+        start: '2022-07-01',
+        end: '2022-08-01',
+    },
+    {
+        by: 'bedrooms_total',
         start: '2022-07-01',
         end: '2022-08-01',
     },
