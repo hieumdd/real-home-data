@@ -3,7 +3,15 @@
 {%- import 'macro/filters.sql.j2' as filters %}
 
 SELECT
-    *
+    {% if level %}
+    date,
+    {% endif %}
+    {% if by %}
+    {{ dimensions.breakdown_cte(by) }},
+    {% endif %}
+    AVG(days_on_market) AS days_on_market,
+    AVG(avg_days_on_market_7) AS avg_days_on_market_7,
+    AVG(avg_days_on_market_14) AS avg_days_on_market_14,
 FROM (
     SELECT
         date,
@@ -29,7 +37,7 @@ FROM (
         (
             SELECT
                 {{ dimensions.date('CloseDate', level) }} AS date,
-                {%- if by -%}
+                {% if by %}
                 {{ dimensions.breakdown(by) }},
                 {% endif %}
                 AVG(DATE_DIFF(CloseDate, OnMarketDate, DAY) + 1) as days_on_market,
@@ -39,12 +47,24 @@ FROM (
                 {{ filters.geo(county, city) }}
             GROUP BY
                 date
-                {% if by %}
+                {% if by%}
                 ,{{ groupbys.breakdown(by) }}
                 {% endif %}
         )
 )
 WHERE
     date BETWEEN {{ start|quote }} AND {{ end|quote }}
+{% if level or by %}
+GROUP BY
+{% endif %}
+    {% if level and by %}
+    date, {{ dimensions.breakdown_cte(by) }}
+    {% elif level %}
+    date
+    {% elif by %}
+    {{ dimensions.breakdown_cte(by) }}
+    {% endif %}
+{% if level %}
 ORDER BY
     date
+{% endif %}

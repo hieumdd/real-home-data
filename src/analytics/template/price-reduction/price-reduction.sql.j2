@@ -3,7 +3,9 @@
 {%- import 'macro/filters.sql.j2' as filters %}
 
 SELECT
+    {% if level %}
     {{ dimensions.date('DATE(MajorChangeTimeStamp)', level) }} AS date,
+    {% endif %}
     {%- if by -%}
         {{ dimensions.breakdown(by) }},
     {%- endif -%}
@@ -17,10 +19,14 @@ WHERE
     AND {{ filters.mls_status_active() }}
     AND {{ filters.market_date(start, end) }}
     AND {{ filters.geo(county, city) }}
-GROUP BY
-    date
-    {% if by %}
-    ,{{ groupbys.breakdown(by) }}
-    {% endif %}
+{% if level and by %}
+GROUP BY 1, 2
+{% elif level %}
+GROUP BY 1
+{% elif by %}
+GROUP BY 1
+{% endif %}
+{% if level %}
 ORDER BY
     date
+{% endif %}
