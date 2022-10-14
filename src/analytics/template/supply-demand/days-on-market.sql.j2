@@ -4,7 +4,7 @@
 
 SELECT
     {% if level %}
-    date,
+    {{ dimensions.date('CloseDate', level) }} AS date,
     {% endif %}
     {% if by %}
     {{ dimensions.breakdown_cte(by) }},
@@ -14,7 +14,7 @@ SELECT
     AVG(avg_days_on_market_14) AS avg_days_on_market_14,
 FROM (
     SELECT
-        date,
+        CloseDate,
         {% if by %}
         {{ dimensions.breakdown_cte(by) }},
         {% endif %}
@@ -23,20 +23,20 @@ FROM (
             {% if by %}
             PARTITION BY {{ dimensions.breakdown_cte(by) }}
             {% endif %}
-            ORDER BY date
+            ORDER BY CloseDate
             ROWS BETWEEN 7 PRECEDING AND CURRENT ROW
         ) AS avg_days_on_market_7,
         AVG(days_on_market) OVER (
             {% if by %}
             PARTITION BY {{ dimensions.breakdown_cte(by) }}
             {% endif %}
-            ORDER BY date
+            ORDER BY CloseDate
             ROWS BETWEEN 14 PRECEDING AND CURRENT ROW
         ) AS avg_days_on_market_14,
     FROM
         (
             SELECT
-                {{ dimensions.date('CloseDate', level) }} AS date,
+                CloseDate,
                 {% if by %}
                 {{ dimensions.breakdown(by) }},
                 {% endif %}
@@ -46,24 +46,19 @@ FROM (
             WHERE
                 {{ filters.geo(county, city) }}
             GROUP BY
-                date
+                CloseDate
                 {% if by%}
                 ,{{ groupbys.breakdown(by) }}
                 {% endif %}
         )
 )
 WHERE
-    date BETWEEN {{ start|quote }} AND {{ end|quote }}
-{% if level or by %}
-GROUP BY
+    CloseDate BETWEEN {{ start|quote }} AND {{ end|quote }}
+{% if level and by %}
+GROUP BY 1, 2
+{% elif level or by %}
+GROUP BY 1
 {% endif %}
-    {% if level and by %}
-    date, {{ dimensions.breakdown_cte(by) }}
-    {% elif level %}
-    date
-    {% elif by %}
-    {{ dimensions.breakdown_cte(by) }}
-    {% endif %}
 {% if level %}
 ORDER BY
     date
