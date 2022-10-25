@@ -14,8 +14,8 @@
     BedroomsTotal AS bedrooms_total
     {%- elif by == 'type' -%}
     PropertySubTypeGroup AS property_sub_type_group
-    {%- elif by == 'zip_code' -%}
-    ZipCode AS zip_code
+    {%- elif by == 'county' -%}
+    County AS county
     {%- endif %}
 {%- endmacro %}
 
@@ -24,7 +24,7 @@
     bedrooms_total
     {%- elif by == 'type' -%}
     property_sub_type_group
-    {%- elif by == 'zip_code' -%}
-    zip_code
+    {%- elif by == 'county' -%}
+    county
     {%- endif %}
 {%- endmacro %}

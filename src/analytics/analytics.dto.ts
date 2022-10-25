@@ -7,7 +7,7 @@ enum Level {
 enum By {
     'bedrooms_total',
     'type',
-    'zip_code',
+    'county',
 }
 
 export class QueryGeneric {

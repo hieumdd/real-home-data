@@ -1,11 +1,11 @@
-{%- macro geo(country, city) -%}
-    {%- if country and city -%}
+{%- macro geo(county, city) -%}
+    {%- if county and city -%}
     (
-        Country IN ({{ country|map("quote")|join(",") }})
+        County IN ({{ county|map("quote")|join(",") }})
         AND City IN ({{ city|map("quote")|join(",") }})
     )
-    {%- elif country -%}
-    Country IN ({{ country|map("quote")|join(",") }})
+    {%- elif county -%}
+    County IN ({{ county|map("quote")|join(",") }})
     {%- elif city -%}
     City IN ({{ city|map("quote")|join(",") }})
     {%- else -%}
