@@ -22,6 +22,7 @@ export class AnalyticsService {
 
     async query(path: string, options: QueryOptions = {}) {
         const sql = this.render(path, options);
+        console.log(sql)
         return this.bigqueryProvider
             .query<any>(sql)
             .then((rows) => {

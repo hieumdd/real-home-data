@@ -2,6 +2,7 @@ import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiExtraModels } from '@nestjs/swagger';
 
 import { JwtGuard } from '../auth/jwt.guard';
+import { ParseQueryArray } from './query.pipe';
 import { AnalyticsService } from './analytics.service';
 import { QueryGeneric, QueryLevel, QueryBy } from './analytics.dto';
 
@@ -16,7 +17,9 @@ export class LocationController {
     constructor(private readonly analyticsService: AnalyticsService) {}
 
     @Get(`median-average-house-price`)
-    async locationMedianAverageHousePrice(@Query() options: QueryLevel) {
+    async locationMedianAverageHousePrice(
+        @Query(ParseQueryArray) options: QueryLevel,
+    ) {
         return this.analyticsService.query(
             `${route}/median-average-house-price`,
             options,
@@ -24,7 +27,9 @@ export class LocationController {
     }
 
     @Get(`sales-price-vs-list-price-ratio`)
-    async locationSalesPriceVsListPriceRatio(@Query() options: QueryLevel) {
+    async locationSalesPriceVsListPriceRatio(
+        @Query(ParseQueryArray) options: QueryLevel,
+    ) {
         return this.analyticsService.query(
             `${route}/sales-price-vs-list-price-ratio`,
             options,
@@ -32,7 +37,7 @@ export class LocationController {
     }
 
     @Get(`inventory-by-type`)
-    async locationInventoryByType(@Query() options: QueryLevel) {
+    async locationInventoryByType(@Query(ParseQueryArray) options: QueryLevel) {
         return this.analyticsService.query(
             `${route}/inventory-by-type`,
             options,
@@ -41,7 +46,7 @@ export class LocationController {
 
     @Get(`major-metrics-total-avg-sales-list-days-to-close`)
     async locationMajorMetricsTotalAvgSalesListDaysToClose(
-        @Query() options: QueryGeneric,
+        @Query(ParseQueryArray) options: QueryGeneric,
     ) {
         return this.analyticsService.query(
             `${route}/major-metrics-total-avg-sales-list-days-to-close`,
@@ -51,7 +56,7 @@ export class LocationController {
 
     @Get(`major-metrics-residential-sales-volume`)
     async locationMajorMetricsResidentialSalesVolume(
-        @Query() options: QueryGeneric,
+        @Query(ParseQueryArray) options: QueryGeneric,
     ) {
         return this.analyticsService.query(
             `${route}/major-metrics-residential-sales-volume`,
@@ -60,7 +65,9 @@ export class LocationController {
     }
 
     @Get(`major-metrics-condo-sales-volume`)
-    async locationMajorMetricsCondoSalesVolume(@Query() options: QueryGeneric) {
+    async locationMajorMetricsCondoSalesVolume(
+        @Query(ParseQueryArray) options: QueryGeneric,
+    ) {
         return this.analyticsService.query(
             `${route}/major-metrics-condo-sales-volume`,
             options,
@@ -68,7 +75,9 @@ export class LocationController {
     }
 
     @Get(`major-metrics-days-to-market`)
-    async locationMajorMetricsDaysToMarket(@Query() options: QueryGeneric) {
+    async locationMajorMetricsDaysToMarket(
+        @Query(ParseQueryArray) options: QueryGeneric,
+    ) {
         return this.analyticsService.query(
             `${route}/major-metrics-days-to-market`,
             options,
@@ -76,7 +85,9 @@ export class LocationController {
     }
 
     @Get(`major-metrics-current-inventory`)
-    async locationMajorMetricsCurrentInventory(@Query() options: QueryLevel) {
+    async locationMajorMetricsCurrentInventory(
+        @Query(ParseQueryArray) options: QueryLevel,
+    ) {
         return this.analyticsService.query(
             `${route}/major-metrics-current-inventory`,
             options,
@@ -84,7 +95,7 @@ export class LocationController {
     }
 
     @Get(`inventory`)
-    async locationInventory(@Query() options: QueryBy) {
+    async locationInventory(@Query(ParseQueryArray) options: QueryBy) {
         return this.analyticsService.query(`${route}/inventory`, options);
     }
 }

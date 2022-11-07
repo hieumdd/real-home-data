@@ -13,8 +13,8 @@ enum By {
 export class QueryGeneric {
     start: string;
     end: string;
-    county?: string;
-    city?: string;
+    county?: string[];
+    city?: string[];
 }
 
 export class QueryLevel extends QueryGeneric {

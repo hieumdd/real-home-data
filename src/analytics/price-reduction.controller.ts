@@ -2,6 +2,7 @@ import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiExtraModels } from '@nestjs/swagger';
 
 import { JwtGuard } from '../auth/jwt.guard';
+import { ParseQueryArray } from './query.pipe';
 import { AnalyticsService } from './analytics.service';
 import { QueryLevelBy } from './analytics.dto';
 
@@ -16,7 +17,9 @@ export class PriceReductionController {
     constructor(private readonly analyticsService: AnalyticsService) {}
 
     @Get('price-reduction')
-    async priceReductionPriceReduction(@Query() options: QueryLevelBy) {
+    async priceReductionPriceReduction(
+        @Query(ParseQueryArray) options: QueryLevelBy,
+    ) {
         return this.analyticsService.query(`${route}/price-reduction`, options);
     }
 }

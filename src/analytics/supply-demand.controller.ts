@@ -2,6 +2,7 @@ import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiExtraModels } from '@nestjs/swagger';
 
 import { JwtGuard } from '../auth/jwt.guard';
+import { ParseQueryArray } from './query.pipe';
 import { AnalyticsService } from './analytics.service';
 import { QueryLevelBy } from './analytics.dto';
 
@@ -16,13 +17,15 @@ export class SupplyDemandController {
     constructor(private readonly analyticsService: AnalyticsService) {}
 
     @Get(`absorbtion-rate`)
-    async supplyDemandAbsorbtionRate(@Query() options: QueryLevelBy) {
+    async supplyDemandAbsorbtionRate(
+        @Query(ParseQueryArray) options: QueryLevelBy,
+    ) {
         return this.analyticsService.query(`${route}/absorbtion-rate`, options);
     }
 
     @Get(`closed-sales-vs-under-contract`)
     async supplyDemandClosedSalesVsUnderContract(
-        @Query() options: QueryLevelBy,
+        @Query(ParseQueryArray) options: QueryLevelBy,
     ) {
         return this.analyticsService.query(
             `${route}/closed-sales-vs-under-contract`,
@@ -32,7 +35,7 @@ export class SupplyDemandController {
 
     @Get(`new-listing-vs-under-contract`)
     async supplyDemandNewListingVsUnderContract(
-        @Query() options: QueryLevelBy,
+        @Query(ParseQueryArray) options: QueryLevelBy,
     ) {
         return this.analyticsService.query(
             `${route}/new-listing-vs-under-contract`,
@@ -41,7 +44,9 @@ export class SupplyDemandController {
     }
 
     @Get(`days-on-market`)
-    async supplyDemandDaysOnMarket(@Query() options: QueryLevelBy) {
+    async supplyDemandDaysOnMarket(
+        @Query(ParseQueryArray) options: QueryLevelBy,
+    ) {
         return this.analyticsService.query(`${route}/days-on-market`, options);
     }
 }
