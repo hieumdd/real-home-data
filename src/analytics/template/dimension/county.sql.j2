@@ -1,5 +1,7 @@
 SELECT
-    DISTINCT County AS county
+    DISTINCT
+    County AS county,
+    CountyAbbrev AS county_abbrev,
 FROM
     MLSGrid.Property
 ORDER BY
