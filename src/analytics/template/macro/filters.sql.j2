@@ -1,36 +1,31 @@
-{%- macro geo(county, city) -%}
-    {%- if county and city -%}
+{%- macro geo(county, city, postal_code) -%}
     (
-        County IN (
+        1 = 1
+        {% if county %}
+        AND County IN (
             {%- set comma = joiner() -%}
             {%- for _county in county -%}
             {{ comma() }} {{ _county | quote }}
             {%- endfor -%}
         )
+        {% endif %}
+        {% if city %}
         AND City IN (
             {%- set comma = joiner() -%}
             {%- for _city in city -%}
             {{ comma() }} {{ _city | quote }}
             {%- endfor -%}
         )
+        {% endif %}
+        {% if postal_code %}
+        AND PostalCode IN (
+            {%- set comma = joiner() -%}
+            {%- for _postal_code in postal_code -%}
+            {{ comma() }} {{ _postal_code | quote }}
+            {%- endfor -%}
+        )
+        {% endif %}
     )
-    {%- elif county -%}
-    County IN (
-        {%- set comma = joiner() -%}
-        {%- for _county in county -%}
-        {{ comma() }} {{ _county | quote }}
-        {%- endfor -%}
-    )
-    {%- elif city -%}
-    City IN (
-        {%- set comma = joiner() -%}
-        {%- for _city in city -%}
-        {{ comma() }} {{ _city | quote }}
-        {%- endfor -%}
-    )
-    {%- else -%}
-    1 = 1
-    {%- endif -%}
 {%- endmacro -%}
 
 {%- macro mls_status_closed() -%}

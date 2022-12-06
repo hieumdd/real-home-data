@@ -15,6 +15,7 @@ export class QueryGeneric {
     end: string;
     county?: string[];
     city?: string[];
+    postal_code?: string[];
 }
 
 export class QueryLevel extends QueryGeneric {
@@ -30,9 +31,4 @@ export class QueryLevelBy extends QueryGeneric implements QueryLevel, QueryBy {
     by?: By;
 }
 
-export type QueryOptions =
-    | QueryGeneric
-    | QueryLevel
-    | QueryBy
-    | QueryLevelBy
-    | {};
+export type QueryOptions = QueryGeneric | QueryLevel | QueryBy | QueryLevelBy | {};

@@ -16,7 +16,7 @@ WITH
             MLSGrid.Property
         WHERE
             {{ filters.close_date(start, end) }}
-            AND {{ filters.geo(county, city) }}
+            AND {{ filters.geo(county, city, postal_code) }}
         GROUP BY
             date
             {%- if by -%}
@@ -37,7 +37,7 @@ WITH
                 OffMarketDate BETWEEN '{{ start }}' AND '{{ end }}'
                 OR ContingentDate BETWEEN '{{ start }}' AND '{{ end }}'
             )
-            AND {{ filters.geo(county, city) }}
+            AND {{ filters.geo(county, city, postal_code) }}
         GROUP BY
             date
             {%- if by -%}

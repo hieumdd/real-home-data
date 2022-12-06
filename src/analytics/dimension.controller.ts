@@ -22,4 +22,9 @@ export class DimensionController {
     async dimensionCity() {
         return this.analyticsService.query(`${route}/city`);
     }
+
+    @Get(`postal-code`)
+    async dimensionPostalCode() {
+        return this.analyticsService.query(`${route}/postal-code`);
+    }
 }

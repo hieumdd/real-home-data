@@ -12,7 +12,7 @@ FROM
 WHERE
     {{ filters.mls_status_active() }}
     AND {{ filters.market_date(start, end) }}
-    AND {{ filters.geo(county, city) }}
+    AND {{ filters.geo(county, city, postal_code) }}
 {% if by %}
 GROUP BY
     {{ groupbys.breakdown(by) }}

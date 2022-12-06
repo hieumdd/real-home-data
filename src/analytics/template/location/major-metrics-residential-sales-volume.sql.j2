@@ -7,7 +7,7 @@ FROM
     MLSGrid.Property
 WHERE
     PropertySubTypeGroup = 'Single Family Residence'
-    AND {{ filters.geo(county, city) }}
+    AND {{ filters.geo(county, city, postal_code) }}
     AND {{ filters.close_date(start, end) }}
 GROUP BY
     date

@@ -44,7 +44,7 @@ FROM (
             FROM
                 MLSGrid.Property
             WHERE
-                {{ filters.geo(county, city) }}
+                {{ filters.geo(county, city, postal_code) }}
             GROUP BY
                 CloseDate
                 {% if by%}

@@ -12,7 +12,7 @@ WITH
             MLSGrid.Property
         WHERE
             OnMarketDate BETWEEN '{{ start }}' AND '{{ end }}'
-            AND {{ filters.geo(county, city) }}
+            AND {{ filters.geo(county, city, postal_code) }}
         GROUP BY
             date
     ),
@@ -27,7 +27,7 @@ WITH
                 OffMarketDate BETWEEN '{{ start }}' AND '{{ end }}'
                 OR ContingentDate BETWEEN '{{ start }}' AND '{{ end }}'
             )
-            AND {{ filters.geo(county, city) }}
+            AND {{ filters.geo(county, city, postal_code) }}
         GROUP BY
             date
     )

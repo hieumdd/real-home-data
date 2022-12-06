@@ -8,7 +8,7 @@ FROM
 WHERE
     MlsStatus in ('Active')
     AND {{ filters.market_date(start, end) }}
-    AND {{ filters.geo(county, city) }}
+    AND {{ filters.geo(county, city, postal_code) }}
 GROUP BY
     date
 ORDER BY
