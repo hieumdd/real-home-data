@@ -17,36 +17,22 @@ export class SupplyDemandController {
     constructor(private readonly analyticsService: AnalyticsService) {}
 
     @Get(`absorbtion-rate`)
-    async supplyDemandAbsorbtionRate(
-        @Query(ParseQueryArray) options: QueryLevelBy,
-    ) {
+    async absorbtionRate(@Query(ParseQueryArray) options: QueryLevelBy) {
         return this.analyticsService.query(`${route}/absorbtion-rate`, options);
     }
 
     @Get(`closed-sales-vs-under-contract`)
-    async supplyDemandClosedSalesVsUnderContract(
-        @Query(ParseQueryArray) options: QueryLevelBy,
-    ) {
-        return this.analyticsService.query(
-            `${route}/closed-sales-vs-under-contract`,
-            options,
-        );
+    async closedSalesVsUnderContract(@Query(ParseQueryArray) options: QueryLevelBy) {
+        return this.analyticsService.query(`${route}/closed-sales-vs-under-contract`, options);
     }
 
     @Get(`new-listing-vs-under-contract`)
-    async supplyDemandNewListingVsUnderContract(
-        @Query(ParseQueryArray) options: QueryLevelBy,
-    ) {
-        return this.analyticsService.query(
-            `${route}/new-listing-vs-under-contract`,
-            options,
-        );
+    async newListingVsUnderContract(@Query(ParseQueryArray) options: QueryLevelBy) {
+        return this.analyticsService.query(`${route}/new-listing-vs-under-contract`, options);
     }
 
     @Get(`days-on-market`)
-    async supplyDemandDaysOnMarket(
-        @Query(ParseQueryArray) options: QueryLevelBy,
-    ) {
+    async daysOnMarket(@Query(ParseQueryArray) options: QueryLevelBy) {
         return this.analyticsService.query(`${route}/days-on-market`, options);
     }
 }

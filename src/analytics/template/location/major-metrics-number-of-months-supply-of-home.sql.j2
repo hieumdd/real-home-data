@@ -1,0 +1,27 @@
+{%- import 'macro/filters.sql.j2' as filters %}
+
+SELECT
+    ((active / closed) / (DATE_DIFF ({{ start | quote }}, {{ end | quote }}, DAY) + 1)) * 30
+FROM
+    (
+        SELECT
+            (
+                SELECT
+                    count(*) AS active
+                FROM
+                    MLSGrid.Property
+                WHERE
+                    MlsStatus = 'Active'
+            ) AS active,
+            (
+                SELECT
+                    count(*) AS closed
+                FROM
+                    MLSGrid.Property
+                WHERE
+                    1 = 1
+                    AND {{ filters.mls_status_closed() }}
+                    AND {{ filters.close_date(start, end) }}
+                    AND {{ filters.geo(county, city, postal_code) }}
+    ) AS closed
+)

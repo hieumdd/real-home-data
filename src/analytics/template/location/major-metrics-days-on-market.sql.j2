@@ -1,0 +1,13 @@
+{%- import 'macro/filters.sql.j2' as filters %}
+
+SELECT
+    SUM(DATE_DIFF (CloseDate, OnMarketDate, DAY) + 1) / COUNT(DISTINCT ListingID) as days_on_market,
+FROM
+    MLSGrid.Property
+WHERE
+    1 = 1
+    AND {{ filters.mls_status_closed() }}
+    AND {{ filters.close_date(start, end) }}
+    AND {{ filters.geo(county, city, postal_code) }}
+    AND CloseDate IS NOT NULL
+    AND OnMarketDate IS NOT NULL

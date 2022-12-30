@@ -17,6 +17,8 @@ const routes = [
     'location/major-metrics-condo-sales-volume',
     'location/major-metrics-days-to-market',
     'location/major-metrics-current-inventory',
+    'location/major-metrics-days-on-market',
+    'location/major-metrics-number-of-months-supply-of-home',
     'location/inventory',
     'supply-demand/absorbtion-rate',
     'supply-demand/new-listing-vs-under-contract',
@@ -28,24 +30,24 @@ const routes = [
 const options: QueryOptions[] = [
     {
         start: '2022-07-01',
-        end: '2022-08-01',
+        end: '2022-12-01',
     },
-    {
-        level: 'day',
-        start: '2022-07-01',
-        end: '2022-08-01',
-    },
-    {
-        by: 'bedrooms_total',
-        start: '2022-07-01',
-        end: '2022-08-01',
-    },
-    {
-        level: 'week',
-        by: 'bedrooms_total',
-        start: '2022-07-01',
-        end: '2022-08-01',
-    },
+    // {
+    //     level: 'day',
+    //     start: '2022-07-01',
+    //     end: '2022-08-01',
+    // },
+    // {
+    //     by: 'bedrooms_total',
+    //     start: '2022-07-01',
+    //     end: '2022-08-01',
+    // },
+    // {
+    //     level: 'week',
+    //     by: 'bedrooms_total',
+    //     start: '2022-07-01',
+    //     end: '2022-08-01',
+    // },
 ];
 
 const cases = routes.flatMap((route) =>
@@ -71,7 +73,7 @@ describe('Analytics', () => {
     it.each(cases)('Query %p', async (route, option) => {
         console.log(route);
         return analyticsService.query(route, option).then((res) => {
-            console.log(JSON.stringify(res.data.slice(5)));
+            console.log(JSON.stringify(res.data.slice(0, 5)));
             expect(res).toBeTruthy();
         });
     });

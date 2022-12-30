@@ -17,9 +17,7 @@ export class PriceReductionController {
     constructor(private readonly analyticsService: AnalyticsService) {}
 
     @Get('price-reduction')
-    async priceReductionPriceReduction(
-        @Query(ParseQueryArray) options: QueryLevelBy,
-    ) {
+    async priceReduction(@Query(ParseQueryArray) options: QueryLevelBy) {
         return this.analyticsService.query(`${route}/price-reduction`, options);
     }
 }

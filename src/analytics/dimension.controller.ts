@@ -14,17 +14,17 @@ export class DimensionController {
     constructor(private readonly analyticsService: AnalyticsService) {}
 
     @Get(`county`)
-    async dimensionCounty() {
+    async county() {
         return this.analyticsService.query(`${route}/county`);
     }
 
     @Get(`city`)
-    async dimensionCity() {
+    async city() {
         return this.analyticsService.query(`${route}/city`);
     }
 
     @Get(`postal-code`)
-    async dimensionPostalCode() {
+    async postalCode() {
         return this.analyticsService.query(`${route}/postal-code`);
     }
 }
