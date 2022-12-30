@@ -62,6 +62,19 @@ export class LocationController {
         return this.analyticsService.query(`${route}/major-metrics-current-inventory`, options);
     }
 
+    @Get(`major-metrics-days-on-market`)
+    async majorMetricsDaysOnMarket(@Query(ParseQueryArray) options: QueryGeneric) {
+        return this.analyticsService.query(`${route}/major-metrics-days-on-market`, options);
+    }
+
+    @Get(`major-metrics-number-of-months-supply-of-home`)
+    async majorMetricsNumberOfMonthsSupplyOfHome(@Query(ParseQueryArray) options: QueryGeneric) {
+        return this.analyticsService.query(
+            `${route}/major-metrics-number-of-months-supply-of-home`,
+            options,
+        );
+    }
+
     @Get(`inventory`)
     async inventory(@Query(ParseQueryArray) options: QueryBy) {
         return this.analyticsService.query(`${route}/inventory`, options);

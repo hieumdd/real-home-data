@@ -16,21 +16,20 @@ export class AnalyticsService {
         this.env.addFilter('quote', (value) => `'${value}'`);
     }
 
+    parseResult(value: any) {
+        return value instanceof BigQueryDate ? value.value : value;
+    }
+
     render(path: string, options: QueryOptions) {
         return this.env.render(`${path}.sql.j2`, options);
     }
 
     async query(path: string, options: QueryOptions = {}) {
         const sql = this.render(path, options);
-        console.log(sql)
+
         return this.bigqueryProvider
             .query<any>(sql)
-            .then((rows) => {
-                const parse = (value: any) =>
-                    value instanceof BigQueryDate ? value.value : value;
-
-                return rows.map((row) => chain(row).mapValues(parse).value());
-            })
+            .then((rows) => rows.map((row) => chain(row).mapValues(this.parseResult).value()))
             .then((data) => ({ data }));
     }
 }
