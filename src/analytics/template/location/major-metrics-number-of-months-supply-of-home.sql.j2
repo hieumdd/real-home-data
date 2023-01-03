@@ -1,7 +1,7 @@
 {%- import 'macro/filters.sql.j2' as filters %}
 
 SELECT
-    ((active / closed) / (DATE_DIFF ({{ start | quote }}, {{ end | quote }}, DAY) + 1)) * 30
+    ((active / closed) / - (DATE_DIFF ({{ start | quote }}, {{ end | quote }}, DAY) + 1)) * 30
 FROM
     (
         SELECT
