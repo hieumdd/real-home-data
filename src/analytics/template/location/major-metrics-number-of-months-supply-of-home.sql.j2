@@ -11,7 +11,10 @@ FROM
                 FROM
                     MLSGrid.Property
                 WHERE
-                    MlsStatus = 'Active'
+                    1 = 1
+                    AND MlsStatus = 'Active'
+                    AND {{ filters.close_date(start, end) }}
+                    AND {{ filters.geo(county, city, postal_code) }}
             ) AS active,
             (
                 SELECT
