@@ -1,13 +1,38 @@
 {%- import 'macro/filters.sql.j2' as filters %}
 
 SELECT
-    SUM(DATE_DIFF (CloseDate, OnMarketDate, DAY) + 1) / COUNT(DISTINCT ListingID) as days_on_market,
+    SAFE_DIVIDE(days_diff, listing) AS value
 FROM
-    MLSGrid.Property
-WHERE
-    1 = 1
-    AND {{ filters.mls_status_closed() }}
-    AND {{ filters.close_date(start, end) }}
-    AND {{ filters.geo(county, city, postal_code) }}
-    AND CloseDate IS NOT NULL
-    AND OnMarketDate IS NOT NULL
+    (
+        SELECT
+            *
+        FROM
+            (
+                SELECT
+                    SUM(days_diff) AS days_diff
+                FROM
+                    (
+                        SELECT
+                            ListingId,
+                            COALESCE((DATE_DIFF (CloseDate, OnMarketDate, DAY) + 1), 0) AS days_diff
+                        FROM
+                            MLSGrid.Property
+                        WHERE
+                            1 = 1
+                            AND {{ filters.mls_status_closed() }}
+                            AND {{ filters.close_date(start, end) }}
+                            AND {{ filters.geo(county, city, postal_code) }}
+                    )
+            ) AS days_diff,
+            (
+                SELECT
+                    COUNT(*) AS listing
+                FROM
+                    MLSGrid.Property
+                WHERE
+                    1 = 1
+                    AND {{ filters.mls_status_closed() }}
+                    AND {{ filters.close_date(start, end) }}
+                    AND {{ filters.geo(county, city, postal_code) }}
+            ) AS closed
+    )

@@ -1,38 +1,38 @@
 {%- import 'macro/filters.sql.j2' as filters %}
 
 SELECT
-    SAFE_DIVIDE(days_diff, listing) AS value
+    ((active / closed) / days_diff) * 30 as value
 FROM
     (
         SELECT
-            *
-        FROM
             (
                 SELECT
-                    SUM(days_diff) AS days_diff
+                    COUNT(*) AS active
                 FROM
-                    (
-                        SELECT
-                            ListingId,
-                            COALESCE((DATE_DIFF(CloseDate, OnMarketDate, DAY) + 1), 0) AS days_diff
-                        FROM
-                            MLSGrid.Property
-                        WHERE
-                            1 = 1
-                            AND {{ filters.mls_status_closed() }}
-                    )
+                    MLSGrid.Property
                 WHERE
-                    days_diff IS NOT NULL
-            ) AS days_diff,
+                    MlsStatus = 'Active'
+            ) AS active,
             (
                 SELECT
-                    COUNT(*) AS listing
+                    COUNT(*) AS closed
                 FROM
                     MLSGrid.Property
                 WHERE
                     1 = 1
-                    AND MlsStatus = 'Active'
+                    AND {{ filters.mls_status_closed() }}
                     AND {{ filters.close_date(start, end) }}
-                    AND {{ filters.geo( county, city, postal_code) }}
-            ) AS closed
+                    AND {{ filters.geo(county, city, postal_code) }}
+            ) AS closed,
+            (
+                SELECT
+                    MAX((DATE_DIFF ({{ end | quote }}, {{ start | quote }}, DAY) + 1)) AS days_diff
+                FROM
+                    MLSGrid.Property
+                WHERE
+                    1 = 1
+                    AND {{ filters.mls_status_closed() }}
+                    AND {{ filters.close_date(start, end) }}
+                    AND {{ filters.geo(county, city, postal_code) }}
+            ) AS days_diff
     )
