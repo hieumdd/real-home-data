@@ -4,7 +4,7 @@ SELECT
     {% if level %}
     OnMarketDate AS date,
     {% endif %}
-    AVG(DATE_DIFF(CURRENT_DATE(), OnMarketDate, DAY) + 1) AS avg_days_to_market,
+    AVG(COALESCE(DATE_DIFF(CURRENT_DATE(), OnMarketDate, DAY), 0) + 1) AS avg_days_to_market,
 FROM
     MLSGrid.Property
 WHERE

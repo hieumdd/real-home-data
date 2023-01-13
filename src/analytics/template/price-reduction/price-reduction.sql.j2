@@ -10,7 +10,7 @@ SELECT
         {{ dimensions.breakdown(by) }},
     {%- endif -%}
     COUNT(ListingId) AS count_units,
-    AVG(DATE_DIFF(DATE(MajorChangeTimeStamp), OnMarketDate, day) + 1) AS avg_time_to_discount_in_days,
+    AVG(COALESCE(DATE_DIFF(DATE(MajorChangeTimeStamp), OnMarketDate, day), 0) + 1) AS avg_time_to_discount_in_days,
     AVG(ListPrice - PreviousListPrice) AS price_reduction,
 FROM
     MLSGrid.Property

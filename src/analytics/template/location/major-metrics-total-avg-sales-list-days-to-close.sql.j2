@@ -7,7 +7,7 @@ SELECT
     SUM(ClosePrice) AS total_close_price,
     AVG(ClosePrice) AS avg_close_price,
     AVG(ListPrice) AS avg_list_price,
-    AVG(DATE_DIFF(CloseDate, OnMarketDate, DAY) + 1) AS avg_days_to_close,
+    AVG(COALESCE(DATE_DIFF(CloseDate, OnMarketDate, DAY), 0) + 1) AS avg_days_to_close,
 FROM
     MLSGrid.Property
 WHERE

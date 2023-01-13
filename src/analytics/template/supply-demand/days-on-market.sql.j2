@@ -40,7 +40,7 @@ FROM (
                 {% if by %}
                 {{ dimensions.breakdown(by) }},
                 {% endif %}
-                AVG(DATE_DIFF(CloseDate, OnMarketDate, DAY) + 1) as days_on_market,
+                AVG(COALESCE(DATE_DIFF(CloseDate, OnMarketDate, DAY), 0) + 1) as days_on_market,
             FROM
                 MLSGrid.Property
             WHERE

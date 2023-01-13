@@ -29,13 +29,14 @@ const routes = [
 
 const options: QueryOptions[] = [
     {
-        start: '2022-07-01',
-        end: '2022-12-01',
+        start: '2022-12-01',
+        end: '2022-12-31',
     },
     // {
     //     level: 'day',
-    //     start: '2022-07-01',
-    //     end: '2022-08-01',
+    //     start: '2022-12-01',
+    //     end: '2022-12-31',
+    //     city: ['Charlotte'],
     // },
     // {
     //     by: 'bedrooms_total',
