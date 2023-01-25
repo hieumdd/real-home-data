@@ -6,6 +6,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { AppController } from './app.controller';
 
 const routes = [
     {
@@ -29,5 +30,6 @@ const routes = [
         ...routes.map(({ module }) => module),
         RouterModule.register(routes),
     ],
+    controllers: [AppController],
 })
 export class AppModule {}
