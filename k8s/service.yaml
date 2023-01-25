@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: real-home-data-backend
+spec:
+  selector:
+    app: real-home-data-backend
+  ports:
+    - port: 5000
+      protocol: TCP
+      targetPort: 5000

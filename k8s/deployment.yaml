@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: real-home-data-backend
+spec:
+  selector:
+    matchLabels:
+      app: real-home-data-backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: real-home-data-backend
+    spec:
+      containers:
+        - name: real-home-data-backend
+          image: us-docker.pkg.dev/real-data-now/gcr.io/real-home-data/backend:master
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: backend
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+              ephemeral-storage: 1Gi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+              ephemeral-storage: 1Gi
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: service-account-key

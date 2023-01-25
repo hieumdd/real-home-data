@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "kubectl: deployment",
+            "type": "shell",
+            "command": "kubectl",
+            "args": [
+                "apply",
+                "-f",
+                "./k8s/deployment.yaml"
+            ],
+        },
+        {
+            "label": "docker: build",
+            "type": "shell",
+            "command": "docker-compose",
+            "args": [
+                "build",
+            ],
+        },
+        {
+            "label": "docker: push",
+            "dependsOn": [
+                "docker: build",
+            ],
+            "type": "shell",
+            "command": "docker-compose",
+            "args": [
+                "push",
+            ],
+        }
+    ]
+}
