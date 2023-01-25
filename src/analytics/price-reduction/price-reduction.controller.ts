@@ -1,10 +1,10 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiExtraModels } from '@nestjs/swagger';
 
-import { JwtGuard } from '../auth/jwt.guard';
-import { ParseQueryArray } from './query.pipe';
-import { AnalyticsService } from './analytics.service';
-import { QueryLevelBy } from './analytics.dto';
+import { JwtGuard } from '../../auth/jwt.guard';
+import { ParseQueryArray } from '../query.pipe';
+import { AnalyticsService } from '../analytics.service';
+import { QueryLevelBy } from '../analytics.dto';
 
 const route = 'price-reduction';
 

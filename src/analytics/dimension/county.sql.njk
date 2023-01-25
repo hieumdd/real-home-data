@@ -1,0 +1,9 @@
+select
+    distinct
+    County as county,
+    CountyAbbrev as county_abbrev,
+    CountyWithStateCode as county_with_state_code,
+from
+    MLSGrid.Property
+order by
+    county

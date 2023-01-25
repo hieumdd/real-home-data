@@ -11,7 +11,7 @@ export class AnalyticsService {
     private env: nunjucks.Environment;
 
     constructor(private bigqueryProvider: BigQueryProvider) {
-        const loader = new nunjucks.FileSystemLoader(`${__dirname}/template`);
+        const loader = new nunjucks.FileSystemLoader(__dirname);
         this.env = new nunjucks.Environment(loader, { autoescape: false });
         this.env.addFilter('quote', (value) => `'${value}'`);
     }
@@ -21,7 +21,7 @@ export class AnalyticsService {
     }
 
     render(path: string, options: QueryOptions) {
-        return this.env.render(`${path}.sql.j2`, options);
+        return this.env.render(`${path}.sql.njk`, options);
     }
 
     async query(path: string, options: QueryOptions = {}) {

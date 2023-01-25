@@ -1,0 +1,40 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    ((active / closed) / days_diff) * 30 as value
+from
+    (
+        select
+            (
+                select
+                    count(*) as active
+                from
+                    MLSGrid.Property
+                where
+                    1 = 1
+                    and MlsStatus = 'Active'
+                    and {{ filters.geo(county, city, postal_code) }}
+            ) as active,
+            (
+                select
+                    count(*) as closed
+                from
+                    MLSGrid.Property
+                where
+                    1 = 1
+                    and {{ filters.mls_status_closed() }}
+                    and {{ filters.close_date(start, end) }}
+                    and {{ filters.geo(county, city, postal_code) }}
+            ) as closed,
+            (
+                select
+                    max((DATE_DIFF ({{ end | quote }}, {{ start | quote }}, DAY) + 1)) as days_diff
+                from
+                    MLSGrid.Property
+                where
+                    1 = 1
+                    and {{ filters.mls_status_closed() }}
+                    and {{ filters.close_date(start, end) }}
+                    and {{ filters.geo(county, city, postal_code) }}
+            ) as days_diff
+    )

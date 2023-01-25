@@ -1,0 +1,19 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    {% if level %}
+    OnMarketDate as date,
+    {% endif %}
+    sum(ListPrice) as total_list_price,
+from
+    MLSGrid.Property
+where
+    MlsStatus in ('Active', 'Coming Soon / Hold')
+    and {{ filters.market_date(start, end) }}
+    and {{ filters.geo(county, city, postal_code) }}
+{% if level %}
+group by
+    date
+order by
+    date
+{% endif %}

@@ -1,0 +1,25 @@
+{%- import 'macro/dimensions.sql.njk' as dimensions %}
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    date,
+    avg(median_close_price) as median_close_price,
+    avg(median_list_price) as median_list_price,
+    avg(safe_divide(median_close_price, median_list_price)) as ratio
+from
+    (
+        select
+            {{ dimensions.date('CloseDate', level) }} as date,
+            percentile_cont(ClosePrice , 0.5) over (partition by CloseDate) as median_close_price,
+            percentile_cont(OriginalListPrice , 0.5) over (partition by CloseDate) as median_list_price,
+        from
+            MLSGrid.Property
+        where
+            {{ filters.mls_status_closed() }}
+            and {{ filters.close_date(start, end) }}
+            and {{ filters.geo(county, city, postal_code) }}
+    )
+group by
+    date
+order by
+    date
