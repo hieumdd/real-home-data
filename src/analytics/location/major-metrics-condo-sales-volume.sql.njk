@@ -1,0 +1,19 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    {% if level %}
+    CloseDate as date,
+    {% endif %}
+    sum(ClosePrice) as total_close_price,
+from
+    MLSGrid.Property
+where
+    PropertySubTypeGroup = 'Condominium'
+    and {{ filters.close_date(start, end) }}
+    and {{ filters.geo(county, city, postal_code) }}
+{% if level %}
+group by
+    date
+order by
+    date
+{% endif %}

@@ -1,0 +1,21 @@
+{%- import 'macro/dimensions.sql.njk' as dimensions %}
+
+{%- macro master_dimension(by) -%}
+master_dimension as (
+    select
+        day,
+        {%- if by -%}
+            {{ dimensions.breakdown(by) }},
+        {%- endif -%}
+    from
+        unnest(generate_date_array(date('2012-01-01'), current_date(), interval 1 day)) as day
+
+        {% if by == 'bedrooms_total' %}
+        cross join (select distinct BedroomsTotal from MLSGrid.Property)
+        {% elif by == 'type' %}
+        cross join (select distinct PropertySubTypeGroup from MLSGrid.Property)
+        {% elif by == 'zip_code' %}
+        cross join (select distinct ZipCode from MLSGrid.Property)
+        {% endif %}
+    ),
+{%- endmacro -%}

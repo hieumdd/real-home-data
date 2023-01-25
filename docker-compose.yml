@@ -1,7 +1,9 @@
 services:
   backend:
     container_name: real-home-data-backend
-    image: us-docker.pkg.dev/${PROJECT_ID}/gcr.io/real-home-data/backend:master
+    image: us-docker.pkg.dev/real-data-now/gcr.io/real-home-data/backend:${GH_REF}
+    build:
+      context: .
     restart: unless-stopped
     env_file:
       - ./.env

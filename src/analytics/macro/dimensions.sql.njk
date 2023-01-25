@@ -1,0 +1,30 @@
+{%- macro date(column, level) -%}
+    {%- if level == 'month' -%}
+    date_trunc({{ column }}, MONTH)
+    {%- elif level == 'week' -%}
+    date_trunc({{ column }}, WEEK)
+    {%- else -%}
+    {{ column }}
+    {%- endif -%}
+{%- endmacro -%}
+
+
+{%- macro breakdown(by) -%}
+    {%- if by == 'bedrooms_total' -%}
+    BedroomsTotal as bedrooms_total
+    {%- elif by == 'type' -%}
+    PropertySubTypeGroup as property_sub_type_group
+    {%- elif by == 'county' -%}
+    County as county
+    {%- endif %}
+{%- endmacro %}
+
+{%- macro breakdown_cte(by) -%}
+    {%- if by == 'bedrooms_total' -%}
+    bedrooms_total
+    {%- elif by == 'type' -%}
+    property_sub_type_group
+    {%- elif by == 'county' -%}
+    county
+    {%- endif %}
+{%- endmacro %}

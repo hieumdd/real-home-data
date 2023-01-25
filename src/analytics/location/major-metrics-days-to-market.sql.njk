@@ -1,0 +1,19 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    {% if level %}
+    OnMarketDate as date,
+    {% endif %}
+    avg(coalesce(DATE_DIFF(CURRENT_DATE(), OnMarketDate, DAY), 0) + 1) as avg_days_to_market,
+from
+    MLSGrid.Property
+where
+    MlsStatus in ('Active')
+    and {{ filters.market_date(start, end) }}
+    and {{ filters.geo(county, city, postal_code) }}
+{% if level %}
+group by
+    date
+order by
+    date
+{% endif %}

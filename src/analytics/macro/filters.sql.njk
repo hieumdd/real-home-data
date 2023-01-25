@@ -1,0 +1,48 @@
+{%- macro geo(county, city, postal_code) -%}
+    (
+        1 = 1
+        {% if county %}
+        and County IN (
+            {%- set comma = joiner() -%}
+            {%- for _county in county -%}
+            {{ comma() }} {{ _county | quote }}
+            {%- endfor -%}
+        )
+        {% endif %}
+        {% if city %}
+        and City IN (
+            {%- set comma = joiner() -%}
+            {%- for _city in city -%}
+            {{ comma() }} {{ _city | quote }}
+            {%- endfor -%}
+        )
+        {% endif %}
+        {% if postal_code %}
+        and PostalCode IN (
+            {%- set comma = joiner() -%}
+            {%- for _postal_code in postal_code -%}
+            {{ comma() }} {{ _postal_code | quote }}
+            {%- endfor -%}
+        )
+        {% endif %}
+    )
+{%- endmacro -%}
+
+{%- macro mls_status_closed() -%}
+    MlsStatus = 'Closed'
+{%- endmacro -%}
+
+{%- macro mls_status_active() -%}
+    MlsStatus in ('Active', 'Coming Soon / Hold', 'Under Contract - Showing', 'Under Contract - Not Showing', 'Closed')
+{%- endmacro -%}
+
+{%- macro close_date(start, end) -%}
+    (CloseDate between {{ start | quote }} and {{ end | quote }})
+{%- endmacro -%}
+
+{%- macro market_date(start, end) -%}
+    (
+        OnMarketDate <= {{ end | quote }}
+        and (OffMarketDate >= {{ start | quote }} or ContingentDate >= {{ start | quote }})
+    )
+{%- endmacro -%}
