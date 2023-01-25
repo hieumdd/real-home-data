@@ -1,0 +1,21 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    {% if level %}
+    CloseDate as date,
+    {% endif %}
+    sum(ClosePrice) as total_close_price,
+    avg(ClosePrice) as avg_close_price,
+    avg(ListPrice) as avg_list_price,
+    avg(coalesce(DATE_DIFF(CloseDate, OnMarketDate, DAY), 0) + 1) as avg_days_to_close,
+from
+    MLSGrid.Property
+where
+    {{ filters.close_date(start, end) }}
+    and {{ filters.geo(county, city, postal_code) }}
+{% if level %}
+group by
+    date
+order by
+    date
+{% endif %}

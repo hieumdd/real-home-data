@@ -1,0 +1,19 @@
+{%- import 'macro/dimensions.sql.njk' as dimensions %}
+{%- import 'macro/groupbys.sql.njk' as groupbys %}
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    {% if by %}
+    {{ dimensions.breakdown(by) }},
+    {% endif %}
+    count(ListingId) as count_units,
+from
+    MLSGrid.Property
+where
+    {{ filters.mls_status_active() }}
+    and {{ filters.market_date(start, end) }}
+    and {{ filters.geo(county, city, postal_code) }}
+{% if by %}
+group by
+    {{ groupbys.breakdown(by) }}
+{% endif %}

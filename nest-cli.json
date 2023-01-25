@@ -3,7 +3,7 @@
     "collection": "@nestjs/schematics",
     "sourceRoot": "src",
     "compilerOptions": {
-        "assets": ["**/*.sql.j2"],
+        "assets": ["**/*.sql.njk"],
         "plugins": [
             {
                 "name": "@nestjs/swagger",

@@ -1,0 +1,65 @@
+{%- import 'macro/dimensions.sql.njk' as dimensions %}
+{%- import 'macro/groupbys.sql.njk' as groupbys %}
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    {% if level %}
+    {{ dimensions.date('CloseDate', level) }} as date,
+    {% endif %}
+    {% if by %}
+    {{ dimensions.breakdown_cte(by) }},
+    {% endif %}
+    avg(days_on_market) as days_on_market,
+    avg(avg_days_on_market_7) as avg_days_on_market_7,
+    avg(avg_days_on_market_14) as avg_days_on_market_14,
+from (
+    select
+        CloseDate,
+        {% if by %}
+        {{ dimensions.breakdown_cte(by) }},
+        {% endif %}
+        days_on_market,
+        avg(days_on_market) over (
+            {% if by %}
+            partition by {{ dimensions.breakdown_cte(by) }}
+            {% endif %}
+            order by CloseDate
+            rows between 7 preceding and current row
+        ) as avg_days_on_market_7,
+        avg(days_on_market) over (
+            {% if by %}
+            partition by {{ dimensions.breakdown_cte(by) }}
+            {% endif %}
+            order by CloseDate
+            rows between 14 preceding and current row
+        ) as avg_days_on_market_14,
+    from
+        (
+            select
+                CloseDate,
+                {% if by %}
+                {{ dimensions.breakdown(by) }},
+                {% endif %}
+                avg(coalesce(DATE_DIFF(CloseDate, OnMarketDate, DAY), 0) + 1) as days_on_market,
+            from
+                MLSGrid.Property
+            where
+                {{ filters.geo(county, city, postal_code) }}
+            group by
+                CloseDate
+                {% if by%}
+                ,{{ groupbys.breakdown(by) }}
+                {% endif %}
+        )
+)
+where
+    CloseDate between {{ start|quote }} and {{ end|quote }}
+{% if level and by %}
+group by 1, 2
+{% elif level or by %}
+group by 1
+{% endif %}
+{% if level %}
+order by
+    date
+{% endif %}

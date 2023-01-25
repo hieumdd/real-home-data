@@ -2,7 +2,7 @@
     (
         1 = 1
         {% if county %}
-        AND County IN (
+        and County IN (
             {%- set comma = joiner() -%}
             {%- for _county in county -%}
             {{ comma() }} {{ _county | quote }}
@@ -10,7 +10,7 @@
         )
         {% endif %}
         {% if city %}
-        AND City IN (
+        and City IN (
             {%- set comma = joiner() -%}
             {%- for _city in city -%}
             {{ comma() }} {{ _city | quote }}
@@ -18,7 +18,7 @@
         )
         {% endif %}
         {% if postal_code %}
-        AND PostalCode IN (
+        and PostalCode IN (
             {%- set comma = joiner() -%}
             {%- for _postal_code in postal_code -%}
             {{ comma() }} {{ _postal_code | quote }}
@@ -37,12 +37,12 @@
 {%- endmacro -%}
 
 {%- macro close_date(start, end) -%}
-    (CloseDate BETWEEN {{ start | quote }} AND {{ end | quote }})
+    (CloseDate between {{ start | quote }} and {{ end | quote }})
 {%- endmacro -%}
 
 {%- macro market_date(start, end) -%}
     (
         OnMarketDate <= {{ end | quote }}
-        AND (OffMarketDate >= {{ start | quote }} OR ContingentDate >= {{ start | quote }})
+        and (OffMarketDate >= {{ start | quote }} or ContingentDate >= {{ start | quote }})
     )
 {%- endmacro -%}

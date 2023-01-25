@@ -1,0 +1,57 @@
+{%- import 'macro/dimensions.sql.njk' as dimensions %}
+{%- import 'macro/filters.sql.njk' as filters %}
+{%- import 'macro/cte.sql.njk' as cte %}
+
+with
+    {{ cte.master_dimension(by) }}
+    new_listings as (
+        select
+            {{ dimensions.date('OnMarketDate', level) }} as date,
+            count(ListingId) as cnt,
+        from
+            MLSGrid.Property
+        where
+            OnMarketDate between '{{ start }}' and '{{ end }}'
+            and {{ filters.geo(county, city, postal_code) }}
+        group by
+            date
+    ),
+    under_contract as (
+        select
+            {{ dimensions.date('coalesce(OffMarketDate, ContingentDate)', level) }} as date,
+            count(ListingId) as cnt,
+        from
+            MLSGrid.Property
+        where
+            (
+                OffMarketDate between '{{ start }}' and '{{ end }}'
+                or ContingentDate between '{{ start }}' and '{{ end }}'
+            )
+            and {{ filters.geo(county, city, postal_code) }}
+        group by
+            date
+    )
+select
+    *,
+    avg(new_listings) over (order by date) as new_listings_avg,
+    avg(under_contract) over (order by date) as under_contract_avg,
+from
+    (
+        select
+            master_dimension.day as date,
+            sum(new_listings.cnt) as new_listings,
+            sum(under_contract.cnt) as under_contract,
+        from
+            master_dimension
+            left join new_listings
+            on master_dimension.day = new_listings.date
+            left join under_contract
+            on master_dimension.day = under_contract.date
+        group by
+            master_dimension.day
+        having
+            new_listings > 0
+            or under_contract > 0
+    )
+order by
+    date
