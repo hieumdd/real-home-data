@@ -1,82 +1,141 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiExtraModels } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { JwtGuard } from '../../auth/jwt.guard';
-import { ParseQueryArray } from '../query.pipe';
 import { AnalyticsService } from '../analytics.service';
-import { QueryGeneric, QueryLevel, QueryBy } from '../analytics.dto';
+import {
+    GenericFilterQuery,
+    LevelFilterQuery,
+    ByOptionalFilterQuery,
+} from '../analytics.dto';
 
 const route = 'location';
 
 @ApiTags('Analytics / Location')
 @ApiBearerAuth()
-@ApiExtraModels(QueryGeneric, QueryLevel, QueryBy)
-@UseGuards(JwtGuard)
+// @UseGuards(JwtGuard)
 @Controller(route)
 export class LocationController {
     constructor(private readonly analyticsService: AnalyticsService) {}
 
     @Get(`median-average-house-price`)
-    async medianAverageHousePrice(@Query(ParseQueryArray) options: QueryLevel) {
-        return this.analyticsService.query(`${route}/median-average-house-price`, options);
+    async medianAverageHousePrice(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/median-average-house-price`, {
+            ...genericFilter,
+            ...levelFilter,
+        });
     }
 
     @Get(`sales-price-vs-list-price-ratio`)
-    async salesPriceVsListPriceRatio(@Query(ParseQueryArray) options: QueryLevel) {
-        return this.analyticsService.query(`${route}/sales-price-vs-list-price-ratio`, options);
+    async salesPriceVsListPriceRatio(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/sales-price-vs-list-price-ratio`, {
+            ...genericFilter,
+            ...levelFilter,
+        });
     }
 
     @Get(`inventory-by-type`)
-    async inventoryByType(@Query(ParseQueryArray) options: QueryLevel) {
-        return this.analyticsService.query(`${route}/inventory-by-type`, options);
+    async inventoryByType(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/inventory-by-type`, {
+            ...genericFilter,
+            ...levelFilter,
+        });
     }
 
     @Get(`major-metrics-total-avg-sales-list-days-to-close`)
-    async majorMetricsTotalAvgSalesListDaysToClose(@Query(ParseQueryArray) options: QueryGeneric) {
+    async majorMetricsTotalAvgSalesListDaysToClose(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
         return this.analyticsService.query(
             `${route}/major-metrics-total-avg-sales-list-days-to-close`,
-            options,
+            { ...genericFilter, ...levelFilter },
         );
     }
 
     @Get(`major-metrics-residential-sales-volume`)
-    async majorMetricsResidentialSalesVolume(@Query(ParseQueryArray) options: QueryGeneric) {
-        return this.analyticsService.query(
-            `${route}/major-metrics-residential-sales-volume`,
-            options,
-        );
+    async majorMetricsResidentialSalesVolume(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/major-metrics-residential-sales-volume`, {
+            ...genericFilter,
+            ...levelFilter,
+        });
     }
 
     @Get(`major-metrics-condo-sales-volume`)
-    async majorMetricsCondoSalesVolume(@Query(ParseQueryArray) options: QueryGeneric) {
-        return this.analyticsService.query(`${route}/major-metrics-condo-sales-volume`, options);
+    async majorMetricsCondoSalesVolume(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/major-metrics-condo-sales-volume`, {
+            ...genericFilter,
+            ...levelFilter,
+        });
     }
 
     @Get(`major-metrics-days-to-market`)
-    async majorMetricsDaysToMarket(@Query(ParseQueryArray) options: QueryGeneric) {
-        return this.analyticsService.query(`${route}/major-metrics-days-to-market`, options);
+    async majorMetricsDaysToMarket(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/major-metrics-days-to-market`, {
+            ...genericFilter,
+            ...levelFilter,
+        });
     }
 
     @Get(`major-metrics-current-inventory`)
-    async majorMetricsCurrentInventory(@Query(ParseQueryArray) options: QueryLevel) {
-        return this.analyticsService.query(`${route}/major-metrics-current-inventory`, options);
+    async majorMetricsCurrentInventory(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/major-metrics-current-inventory`, {
+            ...genericFilter,
+            ...levelFilter,
+        });
     }
 
     @Get(`major-metrics-days-on-market`)
-    async majorMetricsDaysOnMarket(@Query(ParseQueryArray) options: QueryGeneric) {
-        return this.analyticsService.query(`${route}/major-metrics-days-on-market`, options);
+    async majorMetricsDaysOnMarket(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/major-metrics-days-on-market`, {
+            ...genericFilter,
+            ...levelFilter,
+        });
     }
 
     @Get(`major-metrics-number-of-months-supply-of-home`)
-    async majorMetricsNumberOfMonthsSupplyOfHome(@Query(ParseQueryArray) options: QueryGeneric) {
+    async majorMetricsNumberOfMonthsSupplyOfHome(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() levelFilter: LevelFilterQuery,
+    ) {
         return this.analyticsService.query(
             `${route}/major-metrics-number-of-months-supply-of-home`,
-            options,
+            { ...genericFilter, ...levelFilter },
         );
     }
 
     @Get(`inventory`)
-    async inventory(@Query(ParseQueryArray) options: QueryBy) {
-        return this.analyticsService.query(`${route}/inventory`, options);
+    async inventory(
+        @Query() genericFilter: GenericFilterQuery,
+        @Query() byFilter: ByOptionalFilterQuery,
+    ) {
+        return this.analyticsService.query(`${route}/inventory`, {
+            ...genericFilter,
+            ...byFilter,
+        });
     }
 }

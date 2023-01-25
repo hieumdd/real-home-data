@@ -23,8 +23,8 @@ export class UserService {
         return this.userRepository.findOneOrFail({ id });
     }
 
-    async create(authDto: AuthDto) {
-        const user = this.userRepository.create(authDto);
+    async create(dto: AuthDto) {
+        const user = this.userRepository.create(dto);
         await this.userRepository.persistAndFlush(user);
         return user;
     }
