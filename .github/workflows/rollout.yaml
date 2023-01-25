@@ -30,6 +30,6 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.LOCATION }}
 
-      - run: kubectl rollout restart real-home-data-backend
+      - run: kubectl rollout restart deployments/real-home-data-backend
 
-      - run: kubectl rollout status real-home-data-backend
+      - run: kubectl rollout status deployments/real-home-data-backend
