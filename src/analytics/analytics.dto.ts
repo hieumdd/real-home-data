@@ -1,7 +1,42 @@
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+
+export class GenericFilterQuery {
+    @IsDateString()
+    start: string;
+
+    @IsDateString()
+    end: string;
+
+    @IsOptional()
+    @IsString()
+    @Type(() => String)
+    @Transform(({ value }) => value.split(','))
+    county?: string[];
+
+    @IsOptional()
+    @IsString()
+    @Type(() => String)
+    @Transform(({ value }) => value.split(','))
+    city?: string[];
+
+    @IsOptional()
+    @IsString()
+    @Type(() => String)
+    @Transform(({ value }) => value.split(','))
+    postal_code?: string[];
+}
+
 enum Level {
     'day',
     'week',
     'month',
+}
+
+export class LevelFilterQuery {
+    @IsOptional()
+    @IsEnum(Level)
+    level?: Level;
 }
 
 enum By {
@@ -10,25 +45,13 @@ enum By {
     'county',
 }
 
-export class QueryGeneric {
-    start: string;
-    end: string;
-    county?: string[];
-    city?: string[];
-    postal_code?: string[];
+export class ByFilterQuery {
+    @IsEnum(By)
+    by: By;
 }
 
-export class QueryLevel extends QueryGeneric {
-    level?: Level;
-}
-
-export class QueryBy extends QueryGeneric {
+export class ByOptionalFilterQuery {
+    @IsOptional()
+    @IsEnum(By)
     by?: By;
 }
-
-export class QueryLevelBy extends QueryGeneric implements QueryLevel, QueryBy {
-    level?: Level;
-    by?: By;
-}
-
-export type QueryOptions = QueryGeneric | QueryLevel | QueryBy | QueryLevelBy | {};

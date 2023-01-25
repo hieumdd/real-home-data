@@ -4,7 +4,6 @@ import { BigQueryDate } from '@google-cloud/bigquery';
 import { chain } from 'lodash';
 
 import { BigQueryProvider } from '../google-cloud/bigquery.service';
-import { QueryOptions } from './analytics.dto';
 
 @Injectable()
 export class AnalyticsService {
@@ -20,11 +19,11 @@ export class AnalyticsService {
         return value instanceof BigQueryDate ? value.value : value;
     }
 
-    render(path: string, options: QueryOptions) {
+    render(path: string, options: object) {
         return this.env.render(`${path}.sql.njk`, options);
     }
 
-    async query(path: string, options: QueryOptions = {}) {
+    async query(path: string, options: object = {}) {
         const sql = this.render(path, options);
 
         return this.bigqueryProvider
