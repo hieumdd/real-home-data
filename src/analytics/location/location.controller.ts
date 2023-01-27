@@ -13,7 +13,7 @@ const route = 'location';
 
 @ApiTags('Analytics / Location')
 @ApiBearerAuth()
-// @UseGuards(JwtGuard)
+@UseGuards(JwtGuard)
 @Controller(route)
 export class LocationController {
     constructor(private readonly analyticsService: AnalyticsService) {}

@@ -5,6 +5,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     kubernetes.io/ingress.global-static-ip-name: backend-static-1
+    networking.gke.io/managed-certificates: managed-cert
 spec:
   rules:
     - http:
