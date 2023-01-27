@@ -42,11 +42,7 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
 @Module({
     imports: [
         MikroOrmModule.forRootAsync({
-            imports: [
-                ConfigModule.forRoot({
-                    envFilePath: ['.env', '.env.production'],
-                }),
-            ],
+            imports: [ConfigModule.forRoot({ envFilePath: ['.env', '.env.production'] })],
             inject: [ConfigService],
             useFactory: MikroOrmConfig,
         }),

@@ -10,18 +10,16 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('sign-up')
-    async signUp(@Body() authDto: AuthDto) {
-        return this.authService.signUp(authDto).then((user) => ({
-            user,
-            token: this.authService.getJwt(user.id),
-        }));
+    async signUp(@Body() dto: AuthDto) {
+        return this.authService
+            .signUp(dto)
+            .then((user) => ({ user, token: this.authService.getJwt(user.id) }));
     }
 
     @Post('sign-in')
-    async signIn(@Body() authDto: AuthDto) {
-        return this.authService.signIn(authDto).then((user) => ({
-            user,
-            token: this.authService.getJwt(user.id),
-        }));
+    async signIn(@Body() dto: AuthDto) {
+        return this.authService
+            .signIn(dto)
+            .then((user) => ({ user, token: this.authService.getJwt(user.id) }));
     }
 }

@@ -9,18 +9,9 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { AppController } from './app.controller';
 
 const routes = [
-    {
-        path: 'auth',
-        module: AuthModule,
-    },
-    {
-        path: 'user',
-        module: UserModule,
-    },
-    {
-        path: 'analytics',
-        module: AnalyticsModule,
-    },
+    { path: 'auth', module: AuthModule },
+    { path: 'user', module: UserModule },
+    { path: 'analytics', module: AnalyticsModule },
 ];
 
 @Module({
