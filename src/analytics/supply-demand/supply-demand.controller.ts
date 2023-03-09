@@ -23,7 +23,7 @@ export class SupplyDemandController {
     async absorbtionRate(
         @Query() genericFilter: GenericFilterQuery,
         @Query() levelFilter: LevelFilterQuery,
-        @Query() byFilter: ByFilterQuery,
+        @Query() byFilter: ByOptionalFilterQuery,
     ) {
         return this.analyticsService.query(`${route}/absorbtion-rate`, {
             ...genericFilter,
@@ -49,7 +49,7 @@ export class SupplyDemandController {
     async newListingVsUnderContract(
         @Query() genericFilter: GenericFilterQuery,
         @Query() levelFilter: LevelFilterQuery,
-        @Query() byFilter: ByFilterQuery,
+        @Query() byFilter: ByOptionalFilterQuery,
     ) {
         return this.analyticsService.query(`${route}/new-listing-vs-under-contract`, {
             ...genericFilter,
