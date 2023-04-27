@@ -1,0 +1,16 @@
+{%- import 'macro/dimensions.sql.njk' as dimensions %}
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    {{ dimensions.date('OnMarketDate', level) }} as date,
+    PropertySubTypeGroup as property_sub_type_group,
+    count(ListingId) AS cnt,
+from
+    MLSGrid.Property
+where
+    PropertySubTypeGroup in ('Single Family Residence', 'Condominium' )
+    and (OnMarketDate between {{ start | quote }} and {{ end | quote }})
+    and {{ filters.geo(county, city, postal_code) }}
+group by
+    date,
+    property_sub_type_group

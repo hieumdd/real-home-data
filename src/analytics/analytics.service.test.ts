@@ -5,7 +5,7 @@ import { AnalyticsService } from './analytics.service';
 
 jest.setTimeout(60_000);
 
-describe('Analytics', () => {
+describe('analytics', () => {
     let moduleRef: TestingModule;
     let analyticsService: AnalyticsService;
 
@@ -67,8 +67,20 @@ describe('Analytics', () => {
         });
     });
 
-    describe('supply-demand', () => {
+    describe('price-reduction', () => {
         it.each(['price-reduction/price-reduction'])('%p', async (route) => {
+            const res = await analyticsService.query(route, { ...dateOptions });
+            expect(res).toBeTruthy();
+        });
+    });
+
+    describe('phase-2', () => {
+        it.each([
+            'phase-2/closed-sales',
+            'phase-2/dollar-volume',
+            'phase-2/new-listing',
+            'phase-2/pending-sales',
+        ])('%p', async (route) => {
             const res = await analyticsService.query(route, { ...dateOptions });
             expect(res).toBeTruthy();
         });

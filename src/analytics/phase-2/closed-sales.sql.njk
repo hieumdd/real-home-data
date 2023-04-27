@@ -1,0 +1,17 @@
+{%- import 'macro/dimensions.sql.njk' as dimensions %}
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    {{ dimensions.date('CloseDate', level) }} as date,
+    PropertySubTypeGroup as property_sub_type_group,
+    count(ListingId) as total_units,
+from
+    MLSGrid.Property
+where
+    {{ filters.mls_status_closed() }}
+    and PropertySubTypeGroup in ('Single Family Residence','Condominium' )
+    and {{ filters.close_date(start, end) }}
+    and {{ filters.geo(county, city, postal_code) }}
+group by
+    date,
+    property_sub_type_group
