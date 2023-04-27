@@ -6,6 +6,7 @@ import { DimensionController } from './dimension/dimension.controller';
 import { LocationController } from './location/location.controller';
 import { SupplyDemandController } from './supply-demand/supply-demand.controller';
 import { PriceReductionController } from './price-reduction/price-reduction.controller';
+import { Phase2Controller } from './phase-2/phase-2.controller';
 
 @Module({
     imports: [GoogleCloudModule],
@@ -15,6 +16,7 @@ import { PriceReductionController } from './price-reduction/price-reduction.cont
         LocationController,
         SupplyDemandController,
         PriceReductionController,
+        Phase2Controller,
     ],
 })
 export class AnalyticsModule {}
