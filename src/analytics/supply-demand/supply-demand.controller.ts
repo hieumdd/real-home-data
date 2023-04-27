@@ -3,12 +3,7 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { JwtGuard } from '../../auth/jwt.guard';
 import { AnalyticsService } from '../analytics.service';
-import {
-    GenericFilterQuery,
-    LevelFilterQuery,
-    ByFilterQuery,
-    ByOptionalFilterQuery,
-} from '../analytics.dto';
+import { GenericFilterQuery, LevelFilterQuery, ByOptionalFilterQuery } from '../analytics.dto';
 
 const route = 'supply-demand';
 
@@ -23,7 +18,7 @@ export class SupplyDemandController {
     async absorbtionRate(
         @Query() genericFilter: GenericFilterQuery,
         @Query() levelFilter: LevelFilterQuery,
-        @Query() byFilter: ByFilterQuery,
+        @Query() byFilter: ByOptionalFilterQuery,
     ) {
         return this.analyticsService.query(`${route}/absorbtion-rate`, {
             ...genericFilter,
@@ -36,7 +31,7 @@ export class SupplyDemandController {
     async closedSalesVsUnderContract(
         @Query() genericFilter: GenericFilterQuery,
         @Query() levelFilter: LevelFilterQuery,
-        @Query() byFilter: ByFilterQuery,
+        @Query() byFilter: ByOptionalFilterQuery,
     ) {
         return this.analyticsService.query(`${route}/closed-sales-vs-under-contract`, {
             ...genericFilter,
@@ -49,7 +44,7 @@ export class SupplyDemandController {
     async newListingVsUnderContract(
         @Query() genericFilter: GenericFilterQuery,
         @Query() levelFilter: LevelFilterQuery,
-        @Query() byFilter: ByFilterQuery,
+        @Query() byFilter: ByOptionalFilterQuery,
     ) {
         return this.analyticsService.query(`${route}/new-listing-vs-under-contract`, {
             ...genericFilter,

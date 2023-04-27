@@ -37,9 +37,9 @@ export class GenericFilterQuery {
 }
 
 enum Level {
-    'day',
-    'week',
-    'month',
+    'day' = 'day',
+    'week' = 'week',
+    'month' = 'month',
 }
 
 export class LevelFilterQuery {
@@ -50,9 +50,9 @@ export class LevelFilterQuery {
 }
 
 enum By {
-    'bedrooms_total',
-    'type',
-    'county',
+    'bedrooms_total' = 'bedrooms_total',
+    'type' = 'type',
+    'county' = 'county',
 }
 
 export class ByFilterQuery {
