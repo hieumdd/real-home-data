@@ -47,6 +47,8 @@ describe('analytics', () => {
             'location/major-metrics-number-of-months-supply-of-home',
             'location/major-metrics-residential-sales-volume',
             'location/major-metrics-total-avg-sales-list-days-to-close',
+            'location/major-metrics-absorption-rate',
+            'location/major-metrics-total-inventory',
             'location/median-average-house-price',
             'location/sales-price-vs-list-price-ratio',
         ])('%p', async (route) => {

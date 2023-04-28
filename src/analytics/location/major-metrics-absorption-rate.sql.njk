@@ -1,0 +1,19 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    safe_divide(
+        (
+            select count(ListingId) as cnt,
+            from MLSGrid.Property
+            where 1 = 1
+                and {{ filters.close_date(start, end) }}
+                and {{ filters.geo(county, city, postal_code) }}
+        ),
+        (
+            select count(ListingId) as cnt,
+            from MLSGrid.Property
+            where 1 = 1
+                and {{ filters.market_date(start, end) }}
+                and {{ filters.mls_status_active() }}
+        )
+    ) * 100
