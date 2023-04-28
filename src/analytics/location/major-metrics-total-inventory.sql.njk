@@ -1,0 +1,9 @@
+{%- import 'macro/filters.sql.njk' as filters %}
+
+select
+    count(ListingId) as cnt,
+from
+    MLSGrid.Property
+where
+    {{ filters.mls_status_active() }}
+    and {{ filters.market_date(start, end) }}

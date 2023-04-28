@@ -1,0 +1,300 @@
+select
+    *,
+    safe_divide((ccs - day1_ccs), day1_ccs) * 100 as per_chng_day1_ccs,
+    safe_divide((ccs - day7_ccs), day7_ccs) * 100 as per_chng_day7_ccs,
+    safe_divide((ccs - day30_ccs), day30_ccs) * 100 as per_chng_day30_ccs,
+    ccs - day1_ccs as abs_day1_ccs,
+    ccs - day7_ccs as abs_day7_ccs,
+    ccs - day30_ccs as abs_day30_ccs,
+    safe_divide((ccr - day1_ccr), day1_ccr) * 100 as per_chng_day1_ccr,
+    safe_divide((ccr - day7_ccr), day7_ccr) * 100 as per_chng_day7_ccr,
+    safe_divide((ccr - day30_ccr), day30_ccr) * 100 as per_chng_day30_ccr,
+    ccr - day1_ccr as abs_day1_ccr,
+    ccr - day7_ccr as abs_day7_ccr,
+    ccr - day30_ccr as abs_day30_ccr,
+    safe_divide((total_followers - day1_total_followers), day1_total_followers) * 100 as per_chng_day1_follower,
+    safe_divide((total_followers - day7_total_followers), day7_total_followers) * 100 as per_chng_day7_follower,
+    safe_divide((total_followers - day30_total_followers), day30_total_followers) * 100 as per_chng_day30_follower,
+    (total_followers - day1_total_followers) as abs_day1_total_followers,
+    (total_followers - day7_total_followers) as abs_day7_total_followers,
+    (total_followers - day30_total_followers) as abs_day30_total_followers,
+    safe_divide((linkedin_followers - day1_lif), day1_lif) * 100 as per_chng_day1_lif,
+    safe_divide((linkedin_followers - day7_lif), day7_lif) * 100 as per_chng_day7_lif,
+    safe_divide((linkedin_followers - day30_lif), day30_lif) * 100 as per_chng_day30_lif,
+    safe_divide((instagram_followers - day1_igf), day1_igf) * 100 as per_chng_day1_igf,
+    safe_divide((instagram_followers - day7_igf), day7_igf) * 100 as per_chng_day7_igf,
+    safe_divide((instagram_followers - day30_igf), day30_igf) * 100 as per_chng_day30_igf,
+    safe_divide((youtube_followers - day1_yts), day1_yts) * 100 as per_chng_day1_yts,
+    safe_divide((youtube_followers - day7_yts), day7_yts) * 100 as per_chng_day7_yts,
+    safe_divide((youtube_followers - day30_yts), day30_yts) * 100 as per_chng_day30_yts,
+    safe_divide((twitter_followers - day1_twf), day1_twf) * 100 as per_chng_day1_twf,
+    safe_divide((twitter_followers - day7_twf), day7_twf) * 100 as per_chng_day7_twf,
+    safe_divide((twitter_followers - day30_twf), day30_twf) * 100 as per_chng_day30_twf,
+    safe_divide((facebook_followers - day1_fbf), day1_fbf) * 100 as per_chng_day1_fbf,
+    safe_divide((facebook_followers - day7_fbf), day7_fbf) * 100 as per_chng_day7_fbf,
+    safe_divide((facebook_followers - day30_fbf), day30_fbf) * 100 as per_chng_day30_fbf,
+    safe_divide((ccp_li - day1_ccp_li), day1_ccp_li) * 100 as per_chng_day1_ccp_li,
+    safe_divide((ccp_li - day7_ccp_li), day7_ccp_li) * 100 as per_chng_day7_ccp_li,
+    safe_divide((ccp_li - day30_ccp_li), day30_ccp_li) * 100 as per_chng_day30_ccp_li,
+    (ccp_li - day1_ccp_li) as abs_ccp_li_day1,
+    (ccp_li - day7_ccp_li) as abs_ccp_li_day7,
+    (ccp_li - day30_ccp_li) as abs_ccp_li_day30,
+    safe_divide((ccp_ig - day1_ccp_ig), day1_ccp_ig) * 100 as per_chng_day1_ccp_ig,
+    safe_divide((ccp_ig - day7_ccp_ig), day7_ccp_ig) * 100 as per_chng_day7_ccp_ig,
+    safe_divide((ccp_ig - day30_ccp_ig), day30_ccp_ig) * 100 as per_chng_day30_ccp_ig,
+    (ccp_ig - day1_ccp_ig) as abs_ccp_ig_day1,
+    (ccp_ig - day7_ccp_ig) as abs_ccp_ig_day7,
+    (ccp_ig - day30_ccp_ig) as abs_ccp_ig_day30,
+    safe_divide((ccp_tw - day1_ccp_tw), day1_ccp_tw) * 100 as per_chng_day1_ccp_tw,
+    safe_divide((ccp_tw - day7_ccp_tw), day7_ccp_tw) * 100 as per_chng_day7_ccp_tw,
+    safe_divide((ccp_tw - day30_ccp_tw), day30_ccp_tw) * 100 as per_chng_day30_ccp_tw,
+    (ccp_tw - day1_ccp_tw) as abs_ccp_tw_day1,
+    (ccp_tw - day7_ccp_tw) as abs_ccp_tw_day7,
+    (ccp_tw - day30_ccp_tw) as abs_ccp_tw_day30,
+    safe_divide((ccp_yt - day1_ccp_yt), day1_ccp_yt) * 100 as per_chng_day1_ccp_yt,
+    safe_divide((ccp_yt - day7_ccp_yt), day7_ccp_yt) * 100 as per_chng_day7_ccp_yt,
+    safe_divide((ccp_yt - day30_ccp_yt), day30_ccp_yt) * 100 as per_chng_day30_ccp_yt,
+    (ccp_yt - day1_ccp_yt) as abs_ccp_yt_day1,
+    (ccp_yt - day7_ccp_yt) as abs_ccp_yt_day7,
+    (ccp_yt - day30_ccp_yt) as abs_ccp_yt_day30,
+    safe_divide((ccp_fb - day1_ccp_fb), day1_ccp_fb) * 100 as per_chng_day1_ccp_fb,
+    safe_divide((ccp_fb - day7_ccp_fb), day7_ccp_fb) * 100 as per_chng_day7_ccp_fb,
+    safe_divide((ccp_fb - day30_ccp_fb), day30_ccp_fb) * 100 as per_chng_day30_ccp_fb,
+    (ccp_fb - day1_ccp_fb) as abs_ccp_fb_day1,
+    (ccp_fb - day7_ccp_fb) as abs_ccp_fb_day7,
+    (ccp_fb - day30_ccp_fb) as abs_ccp_fb_day30,
+from
+    (
+        select
+            current_data.*,
+            day1.ccs as day1_ccs,
+            day1.ccr as day1_ccr,
+            day1.linkedin_followers as day1_lif,
+            day1.instagram_followers as day1_igf,
+            day1.youtube_followers as day1_yts,
+            day1.twitter_followers as day1_twf,
+            day1.facebook_followers as day1_fbf,
+            day1.total_followers as day1_total_followers,
+            day1.ccp_li as day1_ccp_li,
+            day1.ccp_ig as day1_ccp_ig,
+            day1.ccp_tw as day1_ccp_tw,
+            day1.ccp_yt as day1_ccp_yt,
+            day1.ccp_fb as day1_ccp_fb,
+            day7.ccs as day7_ccs,
+            day7.ccr as day7_ccr,
+            day7.linkedin_followers as day7_lif,
+            day7.instagram_followers as day7_igf,
+            day7.youtube_followers as day7_yts,
+            day7.twitter_followers as day7_twf,
+            day7.facebook_followers as day7_fbf,
+            day7.total_followers as day7_total_followers,
+            day7.ccp_li as day7_ccp_li,
+            day7.ccp_ig as day7_ccp_ig,
+            day7.ccp_tw as day7_ccp_tw,
+            day7.ccp_yt as day7_ccp_yt,
+            day7.ccp_fb as day7_ccp_fb,
+            day30.ccs as day30_ccs,
+            day30.ccr as day30_ccr,
+            day30.linkedin_followers as day30_lif,
+            day30.instagram_followers as day30_igf,
+            day30.youtube_followers as day30_yts,
+            day30.twitter_followers as day30_twf,
+            day30.facebook_followers as day30_fbf,
+            day30.total_followers as day30_total_followers,
+            day30.ccp_li as day30_ccp_li,
+            day30.ccp_ig as day30_ccp_ig,
+            day30.ccp_tw as day30_ccp_tw,
+            day30.ccp_yt as day30_ccp_yt,
+            day30.ccp_fb as day30_ccp_fb
+        from
+            (
+                select
+                    *
+                from
+                    (
+                        select
+                            symbol,
+                            company_name,
+                            date,
+                            linkedin_followers,
+                            instagram_followers,
+                            instagram_posts,
+                            facebook_followers,
+                            facebook_page_likes,
+                            youtube_followers,
+                            youtube_views,
+                            twitter_followers,
+                            twitter_tweet,
+                            ccs,
+                            ccr,
+                            ccg,
+                            total_followers,
+                            logo_id,
+                            id,
+                            logo_url,
+                            web,
+                            hq,
+                            st,
+                            div,
+                            reg,
+                            type,
+                            linkedin_url,
+                            instagram_url,
+                            youtube_url,
+                            twitter_url,
+                            facebook_url,
+                            ccp_li,
+                            ccp_ig,
+                            ccp_yt,
+                            ccp_tw,
+                            ccp_fb,
+                            row_number() over (
+                                order by
+                                    ccr
+                            ) as rank,
+                        from
+                            reports_data.master_database_table_WEBAPP
+                        where
+                            1 = 1
+                            and date = (select max(date) from reports_data.master_database_table_WEBAPP) 
+                            and {{ filters.globalFilter( companyName, div, reg, st, symbol) }}
+                    )
+                where
+                    rank <= 24000
+            ) current_data
+            left join (
+                select
+                    symbol,
+                    company_name,
+                    date,
+                    linkedin_followers,
+                    instagram_followers,
+                    instagram_posts,
+                    facebook_followers,
+                    facebook_page_likes,
+                    youtube_followers,
+                    youtube_views,
+                    twitter_followers,
+                    twitter_tweet,
+                    ccs,
+                    ccr,
+                    ccg,
+                    total_followers,
+                    logo_id,
+                    id,
+                    logo_url,
+                    web,
+                    hq,
+                    st,
+                    div,
+                    reg,
+                    type,
+                    linkedin_url,
+                    instagram_url,
+                    youtube_url,
+                    twitter_url,
+                    facebook_url,
+                    ccp_li,
+                    ccp_ig,
+                    ccp_yt,
+                    ccp_tw,
+                    ccp_fb
+                from
+                    reports_data.master_database_table_WEBAPP
+                where
+                    date = date_sub((select max(date) from reports_data.master_database_table_WEBAPP), interval 1 day)
+            ) day1
+            on (
+                current_data.company_name = day1.company_name
+            )
+            left join (
+                select
+                    symbol,
+                    company_name,
+                    date,
+                    linkedin_followers,
+                    instagram_followers,
+                    instagram_posts,
+                    facebook_followers,
+                    facebook_page_likes,
+                    youtube_followers,
+                    youtube_views,
+                    twitter_followers,
+                    twitter_tweet,
+                    ccs,
+                    ccr,
+                    ccg,
+                    total_followers,
+                    logo_id,
+                    id,
+                    logo_url,
+                    web,
+                    hq,
+                    st,
+                    div,
+                    reg,
+                    type,
+                    linkedin_url,
+                    instagram_url,
+                    youtube_url,
+                    twitter_url,
+                    facebook_url,
+                    ccp_li,
+                    ccp_ig,
+                    ccp_yt,
+                    ccp_tw,
+                    ccp_fb
+                from
+                    reports_data.master_database_table_WEBAPP
+                where
+                    date = date_sub((select max(date) from reports_data.master_database_table_WEBAPP), interval 7 day)
+            ) day7
+            on (
+                current_data.company_name = day7.company_name
+            )
+            left join (
+                select
+                    symbol,
+                    company_name,
+                    date,
+                    linkedin_followers,
+                    instagram_followers,
+                    instagram_posts,
+                    facebook_followers,
+                    facebook_page_likes,
+                    youtube_followers,
+                    youtube_views,
+                    twitter_followers,
+                    twitter_tweet,
+                    ccs,
+                    ccr,
+                    ccg,
+                    total_followers,
+                    logo_id,
+                    id,
+                    logo_url,
+                    web,
+                    hq,
+                    st,
+                    div,
+                    reg,
+                    type,
+                    linkedin_url,
+                    instagram_url,
+                    youtube_url,
+                    twitter_url,
+                    facebook_url,
+                    ccp_li,
+                    ccp_ig,
+                    ccp_yt,
+                    ccp_tw,
+                    ccp_fb
+                from
+                    reports_data.master_database_table_WEBAPP
+                where
+                    date = date_sub((select max(date) from reports_data.master_database_table_WEBAPP), interval 30 day)
+            ) day30
+            on (
+                current_data.company_name = day30.company_name
+            )
+    )

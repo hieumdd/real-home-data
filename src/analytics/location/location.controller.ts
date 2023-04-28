@@ -3,11 +3,7 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { JwtGuard } from '../../auth/jwt.guard';
 import { AnalyticsService } from '../analytics.service';
-import {
-    GenericFilterQuery,
-    LevelFilterQuery,
-    ByOptionalFilterQuery,
-} from '../analytics.dto';
+import { GenericFilterQuery, LevelFilterQuery, ByOptionalFilterQuery } from '../analytics.dto';
 
 const route = 'location';
 
@@ -126,6 +122,19 @@ export class LocationController {
             `${route}/major-metrics-number-of-months-supply-of-home`,
             { ...genericFilter, ...levelFilter },
         );
+    }
+
+    @Get(`major-metrics-absorption-rate`)
+    async majorMetricsAbsorptionRate(@Query() genericFilter: GenericFilterQuery) {
+        return this.analyticsService.query(`${route}/major-metrics-absorption-rate`, {
+            ...genericFilter,
+        });
+    }
+    @Get(`major-metrics-total-inventory`)
+    async majorMetricsTotalInventory(@Query() genericFilter: GenericFilterQuery) {
+        return this.analyticsService.query(`${route}/major-metrics-total-inventory`, {
+            ...genericFilter,
+        });
     }
 
     @Get(`inventory`)
