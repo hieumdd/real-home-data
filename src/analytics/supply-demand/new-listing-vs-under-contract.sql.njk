@@ -18,15 +18,12 @@ with
     ),
     under_contract as (
         select
-            {{ dimensions.date('coalesce(OffMarketDate, ContingentDate)', level) }} as date,
+            {{ dimensions.date('ContingentDate', level) }} as date,
             count(ListingId) as cnt,
         from
             MLSGrid.Property
         where
-            (
-                OffMarketDate between '{{ start }}' and '{{ end }}'
-                or ContingentDate between '{{ start }}' and '{{ end }}'
-            )
+            ContingentDate between '{{ start }}' and '{{ end }}'
             and {{ filters.geo(county, city, postal_code) }}
         group by
             date
