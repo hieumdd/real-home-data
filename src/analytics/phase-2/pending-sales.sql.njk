@@ -2,14 +2,14 @@
 {%- import 'macro/filters.sql.njk' as filters %}
 
 select
-    {{ dimensions.date('coalesce(OffMarketDate, ContingentDate)', level) }} as date,
+    {{ dimensions.date('ContingentDate', level) }} as date,
     PropertySubTypeGroup as property_sub_type_group,
     count(ListingId) as total_units,
 from
     MLSGrid.Property
 where
 	PropertySubTypeGroup in ('Single Family Residence','Condominium' )
-    and {{ filters.market_date(start, end) }}
+    and ContingentDate between '{{ start }}' and '{{ end }}'
     and {{ filters.geo(county, city, postal_code) }}
 group by
     date,
